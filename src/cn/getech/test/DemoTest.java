@@ -26,6 +26,21 @@ import java.util.*;
 public class DemoTest {
 
     /**
+     * 获取临时目录，在临时目录操作，避免有目录存在权限，无法执行操作
+     * C:\Users\GETECH~1\AppData\Local\Temp\\
+     */
+    @Test
+    public void getTempDir(){
+
+        String tempPath = System.getProperty("java.io.tmpdir") + File.separator;
+        System.out.println(System.getProperty("java.io.tmpdir")); //C:\Users\GETECH~1\AppData\Local\Temp\
+        System.out.println(File.separator); //\
+        System.out.println(tempPath);
+        String fileName = tempPath.substring(0,tempPath.length()-1) + System.currentTimeMillis() + ".pdf";
+        System.out.println(fileName);
+    }
+
+    /**
      * fastJson解析json数组
      */
     @Test
