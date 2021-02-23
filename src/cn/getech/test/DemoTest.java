@@ -8,6 +8,8 @@ import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.HexUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 
@@ -23,6 +25,34 @@ import java.util.*;
 
 public class DemoTest {
 
+    /**
+     * fastJson解析json数组
+     */
+    @Test
+    public void fastJsonTest(){
+        String qdfUrl = "[{\"fileName\":\"blue.jpg\",\"filePath\":\"https://uat.iiot.hxct.com/api/poros-oss/file/download?path=https://minio-uat.iiot.hxct.com/poros/1363323153101574146.jpg\",\"fileSize\":222931}]";
+        JSONArray jsonArray = JSON.parseArray(qdfUrl);
+        JSONObject jsonObject = jsonArray.getJSONObject(0);
+        String fileName = (String)jsonObject.get("fileName");
+        String url = (String)jsonObject.get("filePath");
+        System.out.println(fileName);
+        System.out.println(url);
+
+        String bdfUrl = "[{\"fileName\":\"blue2.jpg\",\"filePath\":\"https://uat.iiot.hxct.com/api/poros-oss/file/download?path=https://minio-uat.iiot.hxct.com/poros/1363323153101574146.jpg\",\"fileSize\":222931},{\"fileName\":\"yellow.png\",\"filePath\":\"https:www\",\"fileSize\":222931}]";
+        JSONArray jsonArray2 = JSON.parseArray(bdfUrl);
+        System.out.println("数组size:" + jsonArray2.size());
+        for(int i = 0;i < jsonArray2.size(); i++){
+            System.out.println("当前索引:" + i);
+            JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
+            System.out.println((String)jsonObject2.get("fileName"));
+            System.out.println((String)jsonObject2.get("filePath"));
+        }
+
+    }
+
+    /**
+     * 判断nonNull
+     */
     @Test
     public void nonNullNewObject(){
         Student s = new Student();
