@@ -1,5 +1,7 @@
 package cn.getech.test;
 
+import cn.getech.test.dto.CaseConflictGetterAndSetter;
+import cn.getech.test.dto.CaseConflictGetterAndSetterLombok;
 import cn.getech.test.dto.ReverseEnum;
 import cn.getech.test.dto.Student;
 import cn.getech.test.print.PrinterUtil;
@@ -24,6 +26,18 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class DemoTest {
+
+    @Test
+    public void getAndSetter(){
+        CaseConflictGetterAndSetter caseConflictGetterAndSetter = new CaseConflictGetterAndSetter();
+        caseConflictGetterAndSetter.setProcessTwoCode("zhang");
+        System.out.println(caseConflictGetterAndSetter.getProcessTwoCode());
+
+        //lombok编译失败
+        CaseConflictGetterAndSetterLombok caseConflictGetterAndSetters = new CaseConflictGetterAndSetterLombok();
+        caseConflictGetterAndSetters.setProcessTwoCode("zhang");
+        System.out.println(caseConflictGetterAndSetters.getProcessTwoCode());
+    }
 
     /**
      * 获取临时目录，在临时目录操作，避免有目录存在权限，无法执行操作
