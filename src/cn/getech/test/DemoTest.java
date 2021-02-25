@@ -4,6 +4,7 @@ import cn.getech.test.dto.CaseConflictGetterAndSetter;
 import cn.getech.test.dto.CaseConflictGetterAndSetterLombok;
 import cn.getech.test.dto.ReverseEnum;
 import cn.getech.test.dto.Student;
+import cn.getech.test.mybatis.User;
 import cn.getech.test.print.PrinterUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DatePattern;
@@ -27,6 +28,27 @@ import java.util.*;
 
 public class DemoTest {
 
+    /**
+     * String类型equals一个相同值的Integer为false
+     */
+    @Test
+    public void intergerEqualsString(){
+        User user = new User();
+        user.setId(3);
+        if("3".equals(user.getId())){
+            System.out.println("string equal integer success");
+        }
+        if("3".equals(user.getId().toString())){
+            System.out.println("standard writing method");
+        }
+        if("3".equals(3)){
+            System.out.println("failed");
+        }
+    }
+
+    /**
+     * 大小写不同的属性使用lombok生成get set方法会报错
+     */
     @Test
     public void getAndSetter(){
         CaseConflictGetterAndSetter caseConflictGetterAndSetter = new CaseConflictGetterAndSetter();

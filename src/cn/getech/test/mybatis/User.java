@@ -2,15 +2,15 @@ package cn.getech.test.mybatis;
 
 
 public class User {
-    private int id;
+    private Integer id;
     private int age;
     private String username;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

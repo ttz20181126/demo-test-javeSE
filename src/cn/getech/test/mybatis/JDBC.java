@@ -32,6 +32,7 @@ public class JDBC {
             if(resultSet.next()){
                 int id = resultSet.getInt("id");
                 String username = resultSet.getString("username");
+                System.out.println("查询结果集：" + id + ",姓名：" + username);
             }
 
         } catch (SQLException throwables) {
