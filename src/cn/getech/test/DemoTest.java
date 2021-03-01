@@ -11,9 +11,14 @@ import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.HexUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.linuxense.javadbf.DBFException;
+import com.linuxense.javadbf.DBFField;
+import com.linuxense.javadbf.DBFReader;
+import com.linuxense.javadbf.DBFWriter;
 import org.junit.Test;
 
 import java.io.*;
@@ -22,6 +27,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -29,10 +35,191 @@ import java.util.*;
 public class DemoTest {
 
     /**
+     * map中put相同的键，覆盖了值
+     */
+    @Test
+    public void mapPutSameKey(){
+        Map<Integer,String> map = new HashMap<>();
+        map.put(1,"king");
+        map.put(1,"i am the king of unite");
+        System.out.println(JSONUtil.toJsonStr(map));
+    }
+
+    /**
+     * 文件流写出到DBF  ---写不出去，无结果
+     * @throws IOException
+     */
+    @Test
+    public void writeToDbf() throws IOException {
+        FileWriter f = null;
+        try {
+            //true 追加内容
+            f = new FileWriter("C:\\Users\\Getech-200107-1\\Desktop\\sn3.dbf",true);
+            f.write("\\r\\n");
+            f.write("好好学习");
+            f.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if(f != null){
+                f.close();
+            }
+        }
+        System.out.println("文件流写出到dbf");
+    }
+
+    /**
+     * 写出数据到普通文件的三种方式
+     *       --文件不存在自动创建
+     *
+     */
+    @Test
+    public void writeToFile(){
+        try{
+            FileWriter f = new FileWriter("C:\\Users\\Getech-200107-1\\Desktop\\test.txt");
+            f.write("好好学习");
+            //或者：
+            BufferedWriter buf = new BufferedWriter(f);
+            buf.write(" 天天向上");
+            buf.flush();
+            f.close();
+            System.out.println("文件方式一写入完毕");
+
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream("C:\\Users\\Getech-200107-1\\Desktop\\test2.txt");
+                fos.write("方式二".getBytes());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            } finally {
+                if (fos != null) {
+                    fos.close();
+                }
+            }
+            System.out.println("文件方式二写入完毕");
+
+            OutputStreamWriter os = null;
+            FileOutputStream foss = null;
+            try {
+                foss = new FileOutputStream("C:\\Users\\Getech-200107-1\\Desktop\\test3.txt");
+                os = new OutputStreamWriter(foss, StandardCharsets.UTF_8);
+                os.write("方式三");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            } finally {
+                if (os != null) {
+                    os.close();
+                }
+                if (foss != null) {
+                    foss.close();
+                }
+
+            }
+            System.out.println( "方式三文件写入数据");
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * DBF文件写入测试
+     */
+    @Test
+    public void writeDbf(){
+        //fos可去掉
+        OutputStream fos = null;
+        try {
+            fos = new FileOutputStream("C:\\Users\\Getech-200107-1\\Desktop\\test.txt");
+            DBFWriter writer = new DBFWriter(new File("C:\\Users\\Getech-200107-1\\Desktop\\test4.dbf"));
+            DBFField[] fields = new DBFField[1];
+            //Field name should be of length 0-10
+            //Fields should be set before adding records
+            //Fields has already been set  如果test4.dbf已经存在，再运行set属性
+            fields[0] = new DBFField();
+            fields[0].setName("SN");
+            fields[0].setDataType(DBFField.FIELD_TYPE_C);
+            fields[0].setFieldLength(10);
+
+            /*fields[1] = new DBFField();
+            fields[1].setName("code");
+            fields[1].setDataType(DBFField.FIELD_TYPE_C);
+            fields[1].setFieldLength(10);*/
+
+            writer.setFields(fields);
+
+            Object[] rowData = new Object[1];
+            rowData[0] = "1522";
+            //rowData[1] = "12356";
+            writer.addRecord(rowData);
+            //rowData = new Object[1];
+            rowData[0] = "1556";
+            //rowData[1] = "1653323";
+            writer.addRecord(rowData);
+
+            System.out.println("set的属性值：" + JSONUtil.toJsonStr(fields));
+            //writer.addRecord(new String[]{"data"});
+            writer.setCharactersetName("GBK");
+            writer.write();
+        } catch (FileNotFoundException | DBFException e) {
+           e.printStackTrace();
+        } finally {
+            if(fos != null){
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    /**
+     * 读取DBF文件字段和数据
+     */
+    @Test
+    public void readDbf(){
+        InputStream fis = null;
+        try {
+            // 读取文件的输入流
+            fis = new FileInputStream("C:\\Users\\Getech-200107-1\\Desktop\\test4.dbf");
+            // 根据输入流初始化一个DBFReader实例，用来读取DBF文件信息
+            DBFReader reader = new DBFReader(fis);
+            // 调用DBFReader对实例方法得到path文件中字段的个数
+            int fieldsCount = reader.getFieldCount();
+            // 取出字段信息
+            for (int i = 0; i < fieldsCount; i++) {
+                DBFField field = reader.getField(i);
+                System.out.println(field.getName());
+                System.out.println(field.getDataType());
+                System.out.println(field.getFieldLength());
+            }
+            Object[] rowValues;
+            // 一条条取出path文件中记录
+            while ((rowValues = reader.nextRecord()) != null) {
+                for (int i = 0; i < rowValues.length; i++) {
+                    System.out.println(rowValues[i]);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if(fis != null){
+                    fis.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    /**
      * String类型equals一个相同值的Integer为false
      */
     @Test
-    public void intergerEqualsString(){
+    public void integerEqualsString(){
         User user = new User();
         user.setId(3);
         if("3".equals(user.getId())){
