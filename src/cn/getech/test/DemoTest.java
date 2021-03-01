@@ -126,10 +126,9 @@ public class DemoTest {
      */
     @Test
     public void writeDbf(){
-        //fos可去掉
-        OutputStream fos = null;
+        //OutputStream fos = null;
         try {
-            fos = new FileOutputStream("C:\\Users\\Getech-200107-1\\Desktop\\test.txt");
+            //fos = new FileOutputStream("C:\\Users\\Getech-200107-1\\Desktop\\test.txt");
             DBFWriter writer = new DBFWriter(new File("C:\\Users\\Getech-200107-1\\Desktop\\test4.dbf"));
             DBFField[] fields = new DBFField[1];
             //Field name should be of length 0-10
@@ -160,16 +159,16 @@ public class DemoTest {
             //writer.addRecord(new String[]{"data"});
             writer.setCharactersetName("GBK");
             writer.write();
-        } catch (FileNotFoundException | DBFException e) {
+        } catch (  DBFException e) {
            e.printStackTrace();
         } finally {
-            if(fos != null){
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            //if(fos != null){
+            //    try {
+            //        fos.close();
+            //    } catch (IOException e) {
+            //        e.printStackTrace();
+            //    }
+            //}
         }
 
     }
