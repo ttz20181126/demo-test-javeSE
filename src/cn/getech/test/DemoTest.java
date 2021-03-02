@@ -35,6 +35,20 @@ import java.util.*;
 public class DemoTest {
 
     /**
+     * 获取当前目录
+     */
+    @Test
+    public void getCurrentPath(){
+        File directory = new File("");//参数为空
+        try {
+             String current = directory.getCanonicalPath();
+             System.out.println(current);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /**
      * map中put相同的键，覆盖了值
      */
     @Test
