@@ -31,8 +31,149 @@ import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.function.*;
+import java.util.stream.Collectors;
 
 public class DemoTest {
+
+
+    /**
+     * list.stream.map(属性).collect(Collectors.toList());
+     */
+    @Test
+    public void testStreamMap(){
+        List<Student> stringList = new ArrayList<>();
+        Student student = new Student();
+        student.setId(1);
+        student.setName("lisi");
+        student.setSex("nan");
+        stringList.add(student);
+
+        Student student2 = new Student();
+        student2.setId(1);
+        student2.setName("zhangsan");
+        student2.setSex("女");
+        stringList.add(student2);
+        List<Integer> collect = stringList.stream().map(item -> item.getId()).collect(Collectors.toList());
+
+        if(CollUtil.isEmpty(collect)){
+            System.out.println("==========empty=========");
+        }
+        for (Integer a : collect){
+            System.out.println(a);
+        }
+    }
+
+    /**
+     * Integer为null equals和== 都空指针
+     *
+     */
+    @Test
+    public void integerEquals(){
+        Integer a = 3;
+        if(a.equals(3)){
+            System.out.println("=====equals===========");
+        }
+        Integer b = null;
+        if(3 == b){
+            System.out.println(" ====   null == 3  ===");
+        }else{
+            System.out.println("  null != 3   ");
+        }
+        if(b.equals(3)){
+            System.out.println(" =======null equals========== ");
+        }else{
+            System.out.println("===========not null =============");
+        }
+    }
+
+    /**
+     * 取产品编码尖括号
+     */
+    @Test
+    public void subStringBracket(){
+        String name = "射频拉远V5_虹信<LRRU800-ⅢB(H46CL00JC10D1)>";
+        String substring = name.substring(name.lastIndexOf("<") + 1 ,name.length() -1 );
+        System.out.println(substring);
+    }
+
+    /**
+     * lastIndexOf测试
+     */
+    @Test
+    public void subStringLastIndexOf(){
+        String s = "012345678912456-4";
+        String substring = s.substring(0, s.lastIndexOf("-"));
+        //012345678912456
+        System.out.println(substring);
+    }
+
+
+    /**
+     * lambda特性
+     *
+     * 函数接口是只有一个抽象方法的接口，可以有多个默认方法，静态方法。
+     *
+     * Predicate	test(T t)	          判断真假	               9龙的身高大于185cm吗？
+     * Consumer     accept(T t)	          消费消息	 	           输出一个值
+     * Function	    R apply(T t)	      将T映射为R（转换功能）	   获得student对象的名字
+     * Supplier	    T get()	              生产消息	               工厂方法
+     * UnaryOperator	T apply(T t)	  一元操作	               逻辑非（!）
+     * BinaryOperator	apply(T t, U u)	  二元操作    	           求两个数的乘积（*）
+     */
+    @Test
+    public void lambdaTest(){
+        Student student = new Student(1,"张三","男");
+
+        //Predicate 判断   泛型,决定了后面变量的类型,从而决定了变量的方法
+        Predicate<Integer> predicate = x-> x > 185;
+        Predicate<String> stringPredicate = y-> y.equalsIgnoreCase("886");
+        System.out.println("判断是否大于185?:" + predicate.test(98)) ;
+        System.out.println("字符串是否为886?:" + stringPredicate.test("886"));
+
+        //输出值
+        Consumer<String> consumer = System.out::println;
+        consumer.accept("命运由我不由天");
+
+        //类型转化
+        Function<Student,String> function = Student::getName;
+        String name = function.apply(student);
+        System.out.println(name);
+
+        //工厂方法
+        Supplier<Integer> supplier = () -> Integer.valueOf(BigDecimal.TEN.toString());
+        System.out.println(supplier.get());
+
+        //一元操作
+        UnaryOperator<Boolean> unaryOperator = uglily -> !uglily;
+        System.out.println(unaryOperator.apply(true));
+
+        //二元操作
+        BinaryOperator<Integer> operator = (x,y) -> x*y;
+        System.out.println(operator.apply(2,3));
+
+        //函数式接口
+        defineFunctionInterface( () -> "我是一个演示的函数式接口" );
+    }
+
+    public interface Worker{
+        String work();
+    }
+
+    public static void defineFunctionInterface(Worker worker){
+        String work = worker.work();
+        System.out.println(work);
+    }
+
+
+    /**
+     * lambda测试2
+     * 常用的流
+     */
+    @Test
+    public void lambdaTest2(){
+
+    }
 
     /**
      * 获取当前目录

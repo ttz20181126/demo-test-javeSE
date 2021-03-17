@@ -1,29 +1,20 @@
 package cn.getech.test.dto;
 
+
 import java.util.Objects;
 
 public class Student {
 
+    private Integer id;
     private String name;
     private String sex;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Student student = (Student) o;
-        return name.equals(student.name);
+    public Integer getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
-    }
-
-    public Student(){}
-    public Student(String name, String sex) {
-        this.name = name;
-        this.sex = sex;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -42,11 +33,27 @@ public class Student {
         this.sex = sex;
     }
 
+    public Student() {
+    }
+
+    public Student(Integer id, String name, String sex) {
+        this.id = id;
+        this.name = name;
+        this.sex = sex;
+    }
+
     @Override
-    public String toString() {
-        return "Student{" +
-                "name='" + name + '\'' +
-                ", sex='" + sex + '\'' +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Student student = (Student) o;
+        return Objects.equals(id, student.id) &&
+                Objects.equals(name, student.name) &&
+                Objects.equals(sex, student.sex);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, sex);
     }
 }
