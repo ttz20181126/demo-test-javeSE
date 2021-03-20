@@ -36,6 +36,41 @@ import java.util.stream.Collectors;
 
 public class DemoTest {
 
+    /**
+     * null.append("string")报错
+     * "string".append(null) = stringnull
+     */
+    @Test
+    public void stringBufferTest(){
+        StringBuffer sb = new StringBuffer("333");
+        Student s = new Student(2,null,"nan");
+        sb.append(s.getName()).append("555");
+        //333null555
+        System.out.println(sb.toString());
+    }
+
+    /**
+     * string重写了equals和hashcode,比较内容去重
+     */
+    @Test
+    public void testSetContain(){
+        Set<String> set = new HashSet<>();
+        for(int i = 0; i < 10 ;i++){
+            set.add(String.valueOf(i));
+        }
+        set.add("9");
+        //set.forEach(System.out::println);
+        set.stream().forEach(item ->{
+            System.out.println(item);
+        });
+        if(set.contains("433")){
+            System.out.println("contain 443");
+        }
+        if(set.contains("9")){
+            System.out.println("contain 9");
+        }
+    }
+
 
     /**
      * list.stream.map(属性).collect(Collectors.toList());
