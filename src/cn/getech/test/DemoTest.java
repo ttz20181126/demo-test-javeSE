@@ -30,11 +30,46 @@ import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.function.*;
 import java.util.stream.Collectors;
 
 public class DemoTest {
+
+    /**
+     * new的对象get就没有问题
+     * 空对象，使用get方法会空指针
+     */
+    @Test
+    public void nullGet(){
+        Student student = new Student();
+        System.out.println(student.getSex());
+        Student student1 = null;
+        System.out.println(student1.getSex());
+    }
+
+
+    /**
+     * java8获取时间API
+     * 2021/3/20 11:20测试
+     * Sat Mar 20 00:00:00 CST 2021
+     * Sat Mar 20 23:59:59 CST 2021
+     * 2021-03-20
+     */
+    @Test
+    public void testTime(){
+        LocalDateTime startToday = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        LocalDateTime endToday = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
+        Date startDate = Date.from(startToday.atZone(ZoneId.systemDefault()).toInstant());
+        Date endDate = Date.from(endToday.atZone(ZoneId.systemDefault()).toInstant());
+        System.out.println(startDate);
+        System.out.println(endDate);
+        System.out.println(LocalDate.now());
+    }
 
     /**
      * null.append("string")报错
