@@ -23,6 +23,7 @@ import org.junit.Test;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
@@ -39,6 +40,22 @@ import java.util.function.*;
 import java.util.stream.Collectors;
 
 public class DemoTest {
+
+    /**
+     * BigDecimal的加减乘除
+     */
+    @Test
+    public void bigDecemic(){
+        BigDecimal targetNumber = new BigDecimal(363);
+        BigDecimal totalOutput = new BigDecimal(476);
+        BigDecimal totalOutputRate = new BigDecimal(0);
+        if(targetNumber.compareTo(BigDecimal.ZERO) != 0){
+            totalOutputRate = totalOutput.divide(targetNumber,2,BigDecimal.ROUND_HALF_UP);
+        }
+        BigDecimal targetnubmerRate = new BigDecimal(BigInteger.ONE).subtract(totalOutputRate);
+        System.out.println(totalOutputRate);
+        System.out.println(targetnubmerRate);
+    }
 
     /**
      * 年月日时分秒毫秒
