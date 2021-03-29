@@ -41,6 +41,38 @@ import java.util.stream.Collectors;
 public class DemoTest {
 
     /**
+     * 年月日时分秒毫秒
+     */
+    @Test
+    public void hmssss(){
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+        String format = simpleDateFormat.format(date);
+        System.out.println(format);
+    }
+
+
+    /**
+     * 空set包含任何字符串永为false
+     */
+    @Test
+    public void nullNotContains(){
+        if("库存sn".contains("库存sn")){
+            System.out.println("fsdfsdfds f sd");
+        }
+
+        Set<String> nullSet = new HashSet<>();
+        if(!nullSet.contains("contains")){
+            System.out.println("********不包含**************");
+        }
+        Set<String> set = new HashSet<>();
+        set.add("string");
+        if(!set.contains("contains")){
+            System.out.println("********不包含**************");
+        }
+    }
+
+    /**
      * new的对象get就没有问题
      * 空对象，使用get方法会空指针
      */
@@ -49,6 +81,7 @@ public class DemoTest {
         Student student = new Student();
         System.out.println(student.getSex());
         Student student1 = null;
+        //空指针
         System.out.println(student1.getSex());
     }
 
