@@ -42,6 +42,19 @@ import java.util.stream.Collectors;
 public class DemoTest {
 
     /**
+     * Java8去重list
+     */
+    @Test
+    public void distinctTest(){
+        List<String> str = new ArrayList<>();
+        str.add("000001211300256");
+        str.add("000001211300256");
+        List<String> collect = str.stream().distinct().collect(Collectors.toList());
+        System.out.println(JSONUtil.toJsonStr(collect));
+    }
+
+
+    /**
      * BigDecimal的加减乘除
      */
     @Test
