@@ -42,6 +42,59 @@ import java.util.stream.Collectors;
 public class DemoTest {
 
     /**
+     *  绝对值
+     */
+    @Test
+    public void absTest(){
+        int remainTime = -30;
+        System.out.println(Math.abs(remainTime));
+    }
+
+
+    /**
+     * offsetDay偏移日
+     */
+    @Test
+    public void dateTest(){
+        Date end = DateUtil.offsetDay(new Date(), 30);
+        System.out.println(end);
+    }
+
+
+    /**
+     * 创建list时初始化
+     */
+    @Test
+    public void arrayListInit(){
+        List<String> snLists = new ArrayList<String>(){
+            {
+                add("000001210200496");
+                add("000001210200404");
+            }
+        };
+        snLists.stream().forEach(s-> System.out.println(s));
+    }
+
+    /**
+     * list转成in拼接sql   ${取值}   或者foreach直接取list
+     */
+    @Test
+    public void listToIn(){
+        List<String> snList = new ArrayList<>();
+        snList.add("000001210200496");
+        snList.add("000001210200404");
+        snList.add("000001210400644");
+        snList.add("000001210200488");
+        snList.add("000001210200487");
+        StringBuffer barcodeSb = new StringBuffer();
+        for (String barcode : snList) {
+            barcodeSb.append("'").append(barcode).append("'").append(",");
+        }
+        String barcodeList =  barcodeSb.toString().substring(0, barcodeSb.length() - 1);
+        System.out.println(barcodeList);
+    }
+
+    /**
      * Java8去重list
      */
     @Test
