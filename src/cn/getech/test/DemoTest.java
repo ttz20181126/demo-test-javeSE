@@ -8,6 +8,7 @@ import cn.getech.test.mybatis.User;
 import cn.getech.test.print.PrinterUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.HexUtil;
 import cn.hutool.core.util.StrUtil;
@@ -42,12 +43,18 @@ import java.util.stream.Collectors;
 public class DemoTest {
 
     /**
-     *  绝对值
+     *  绝对值 &&  时间减法
      */
     @Test
-    public void absTest(){
-        int remainTime = -30;
-        System.out.println(Math.abs(remainTime));
+    public void absTest() throws ParseException {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String date = "2021-04-08";
+        int remainTime = new Long(DateUtil.between(new Date(),simpleDateFormat.parse(date) , DateUnit.DAY, false)).intValue();
+        System.out.println(remainTime);
+
+        int remainTimes = -30;
+        System.out.println(Math.abs(remainTimes));
     }
 
 
