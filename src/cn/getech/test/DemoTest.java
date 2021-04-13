@@ -42,6 +42,47 @@ import java.util.stream.Collectors;
 
 public class DemoTest {
 
+
+    /**
+     * []   [null]
+     */
+    @Test
+    public void testNull(){
+        List<String> stringList = new ArrayList<>();
+        stringList.add(null);
+        String s = JSONUtil.toJsonStr(stringList);
+        if(CollUtil.isEmpty(stringList)){
+            System.out.println("结果集为[]");
+        }
+        for(String palletno : stringList){
+            if(palletno  == null || "null".equals(palletno)){
+                System.out.println("打印了");
+
+            }
+        }
+        System.out.println(s);
+    }
+
+    /**
+     * java8的时间工具：时间偏移多少天？    时间比较
+     * @throws ParseException
+     */
+    @Test
+    public void testJava8DateUtil() throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = simpleDateFormat.parse("2021-04-14 23:38:20");
+        if (DateUtil.compare(date, DateUtil.beginOfDay(new Date())) < 0) {
+            System.out.println("时间间隔小于0");
+        }else {
+            System.out.println("大于0");
+        }
+
+        //偏移28天
+        Date end = DateUtil.offsetDay(new Date(), 28);
+        System.out.println(simpleDateFormat.format(end));
+    }
+
+
     /**
      *  绝对值 &&  时间减法
      */
@@ -534,13 +575,17 @@ public class DemoTest {
             DBFReader reader = new DBFReader(fis);
             // 调用DBFReader对实例方法得到path文件中字段的个数
             int fieldsCount = reader.getFieldCount();
+            Map<String,Object> map = new HashMap<>();
             // 取出字段信息
             for (int i = 0; i < fieldsCount; i++) {
                 DBFField field = reader.getField(i);
-                System.out.println(field.getName());
-                System.out.println(field.getDataType());
-                System.out.println(field.getFieldLength());
+                map.put("name" + i,field.getName());
+                map.put("dataType" + i,field.getDataType());
+                map.put("fieldLength" + i,field.getFieldLength());
             }
+            map.put("fieldCount",fieldsCount);
+            System.out.println(JSONUtil.toJsonStr(map));
+
             Object[] rowValues;
             // 一条条取出path文件中记录
             while ((rowValues = reader.nextRecord()) != null) {
