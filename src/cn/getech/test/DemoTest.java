@@ -42,6 +42,67 @@ import java.util.stream.Collectors;
 
 public class DemoTest {
 
+    /**
+     * BigDecimal.compareTo作比较
+     */
+    @Test
+    public void bigDecemicCompare(){
+        String strandValue = "3.63";
+        BigDecimal upperValue = new BigDecimal("3.65");
+        BigDecimal strandValue2 = new BigDecimal("3.63");
+        BigDecimal downerValue = new BigDecimal("3.62");
+        if(new BigDecimal(strandValue).compareTo(upperValue)  < 0){
+            System.out.println("strandValue  <  upperValue");
+        }
+        if(new BigDecimal(strandValue).compareTo(strandValue2)  == 0){
+            System.out.println("strandValue  =  strandValue2");
+        }
+        if(new BigDecimal(strandValue).compareTo(downerValue)  > 0){
+            System.out.println("strandValue  >  downerValue");
+        }
+    }
+
+    /**
+     * 比较Integer使用equals
+     */
+    @Test
+    public void integerEqualsInteger(){
+        Integer a = 1;
+        Integer b = 2;
+        if(!a.equals(b)){
+            System.out.println("not equals");
+        }
+
+    }
+    /**
+     * list超过容量后自动扩容，传入的size只是初始化容量
+     */
+    @Test
+    public void listOverSize(){
+        List<String> list = new ArrayList<>(2);
+        list.add("1");
+        list.add("2");
+        list.add("3");
+        list.stream().forEach(System.out::println);
+
+        List<String> list2 = new ArrayList<>();
+        list2.addAll(list);
+        list.stream().forEach(System.out::println);
+    }
+
+    /**
+     * double计算 & 向上取整
+     */
+    @Test
+    public void countMath(){
+
+        int i = Math.floorMod(1 * 3, 1);
+        System.out.println(i);  //0
+
+        Double divide = Double.valueOf(1) /Double.valueOf(2)* Double.valueOf(3);
+        int ceil = (int)Math.ceil(divide);  //2
+        System.out.println(ceil);
+    }
 
     /**
      * []   [null]
