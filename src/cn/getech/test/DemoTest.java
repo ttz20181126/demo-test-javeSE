@@ -43,6 +43,17 @@ import java.util.stream.Collectors;
 public class DemoTest {
 
     /**
+     * 保留两位小数，舍去后面的
+     */
+    @Test
+    public void bigDecemicToString(){
+        BigDecimal strandValue2 = new BigDecimal("16.9011000");
+
+        System.out.println(strandValue2.toString());
+        System.out.println(strandValue2.setScale(2,BigDecimal.ROUND_DOWN));
+    }
+
+    /**
      * BigDecimal.compareTo作比较
      */
     @Test
