@@ -1,13 +1,11 @@
 package cn.getech.test;
 
-import cn.getech.test.dto.CaseConflictGetterAndSetter;
-import cn.getech.test.dto.CaseConflictGetterAndSetterLombok;
-import cn.getech.test.dto.ReverseEnum;
-import cn.getech.test.dto.Student;
+import cn.getech.test.dto.*;
 import cn.getech.test.mybatis.User;
 import cn.getech.test.print.PrinterUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.HexUtil;
@@ -41,6 +39,124 @@ import java.util.function.*;
 import java.util.stream.Collectors;
 
 public class DemoTest {
+
+    @Test
+    public void hashMapLinked(){
+
+        int king = hashMethodOFHashMap("king");
+        System.out.println("king的哈希值：" + king);//3292069
+        int peter = hashMethodOFHashMap("peter");
+        System.out.println("peter的哈希值" +  peter);//106558549
+
+        System.out.println("king计算的数组下标" + ((16-1)&king));//5
+        System.out.println("peter计算的数组下标" + ((16-1)&peter));//5
+
+        //==>上述两者哈希值不同，但是数组下标一样，哈希冲突
+        //==>可以debug这个数据，哈希冲突，值不同，形成链表
+    }
+
+
+    /**
+     * 键相同，hash冲突，返回旧值
+     */
+    @Test
+    public void hashMapRepate(){
+        Map<String, Integer> map = new HashMap<>();
+        Integer king = map.put("king", 178);
+        System.out.println(king);//null
+        Integer king1 = map.put("king", 185);
+        System.out.println(king1);//178
+
+    }
+
+    /**
+     * 调用hashCode、equals测试
+     */
+    @Test
+    public void hashMap2(){
+        Map<HashCodeAndEqulasOverride,String> hashMap = new HashMap<>();
+        HashCodeAndEqulasOverride hashCodeAndEqulasOverride = new HashCodeAndEqulasOverride(1,"asd");
+        HashCodeAndEqulasOverride hashCodeAndEqulasOverrideTwo = new HashCodeAndEqulasOverride(2,"asdTwo");
+        //toString 包名.类名@hashCode
+        //System.out.println(hashCodeAndEqulasOverride.toString() + "   " + hashCodeAndEqulasOverrideTwo.toString());
+        hashMap.put(hashCodeAndEqulasOverride,"3");
+        hashMap.put(hashCodeAndEqulasOverride,"3");
+        hashMap.put(hashCodeAndEqulasOverrideTwo,"4");
+        System.out.println(hashMap.size());  //1
+        hashCodeAndEqulasOverride.setFiledOne(3);
+        hashCodeAndEqulasOverride.setFiledTwo("asdThree");
+        hashMap.put(hashCodeAndEqulasOverride,"5");
+        System.out.println(hashMap.size());   //1
+    }
+
+    /***
+     *  HashMap先比较hashcode,然后比较equals方法
+     *  hashcode相同，且equals为true
+     */
+    @Test
+    public void hashMap(){
+
+        Map<String,String> hashMap = new HashMap<>();
+        List<String> list = Arrays.asList("Aa","BB","C#");
+        List<String> a = new ArrayList<>();
+        List<String> b = new LinkedList<>();
+
+        for(String s : list){
+            //2112  2112   2112
+            System.out.println(s.hashCode());
+            hashMap.put(s,s);
+        }
+        for(String key : hashMap.keySet()){
+            //Aa,Aa    BB,BB   C#,C#
+            System.out.println(key + "," + hashMap.get(key));
+        }
+    }
+
+    /***
+     * HashMap的哈希方法
+     * static final int hash(Object key) {
+     * int h;
+     * return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+     }
+     拆解：
+     */
+    public int hashMethodOFHashMap(Object key){
+        int h;
+        if(key == null){
+            return 0;
+        }else{
+            h = key.hashCode();//哈希值,int 4个字节32位
+            int temp = h>>>16; //右移16位
+            int newHash = h ^ temp;  //异或运算(不同为1)
+            return newHash;
+        }
+    }
+
+    /**
+     * 两位年份和今天属于今年多少天
+     *
+     */
+    @Test
+    public void dateFieldGenerateBarocdeTest(){
+        //两位年份
+        Date adjustDate = new Date();
+        String yyYear = String.valueOf(DateUtil.year(adjustDate));
+        String ruleString = yyYear.substring(yyYear.length()-2);
+        System.out.println(ruleString);
+
+        //今天属于今天多少天
+        int i = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+        System.out.println(i);
+
+        //当前时分秒
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        String format = sdf.format(new Date());
+        System.out.println(format);
+
+        //2021-05-21 18:36:045
+        DateTime dateTime = DateUtil.offsetDay(new Date(), 1);
+        System.out.println(dateTime.toString("yyyy-MM-dd HH:mm:sss"));
+    }
 
     /**
      * 保留两位小数，舍去后面的
