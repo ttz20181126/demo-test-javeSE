@@ -40,6 +40,24 @@ import java.util.stream.Collectors;
 
 public class DemoTest {
 
+    /**
+     * replace取代返回才是新的字符串    */
+    @Test
+    public void replaceString(){
+        String sb = "1323633current_no_shift4666";
+        sb.replace("current_no_shift","sfsdfsd");
+        System.out.println(sb);
+        String newString = sb.replace("current_no_shift","sfsdfsd");
+        System.out.println(newString);
+
+
+        StringBuilder sbBarcode = new StringBuilder("[>16VAAD21145A12345SWLZZ01shift_no_currentN00001");
+        String result = sbBarcode.toString().replace("shift_no_current", "D1");
+        sbBarcode.delete(0,sbBarcode.length());
+        sbBarcode.append(result);
+        System.out.println(sbBarcode);
+    }
+
     @Test
     public void hashMapLinked(){
 
