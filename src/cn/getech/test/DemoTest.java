@@ -40,6 +40,40 @@ import java.util.stream.Collectors;
 
 public class DemoTest {
 
+
+    /**
+     * Arrays.asList()返回了ArrayList但实际不是我们常用的util包类,而是Arrays包
+     */
+    @Test
+    public void arraysTest(){
+        //List<String> stringList = new ArrayList<>();
+        List<String> stringList = Arrays.asList("3","4","5");
+        stringList.forEach(System.out::println);
+
+        //java.lang.UnsupportedOperationException
+        stringList.add("6");
+        stringList.forEach(System.out::println);
+    }
+
+    /**
+     * 改变子字符串同时改变了原字符串
+     */
+    @Test
+    public void subListTest(){
+        List<String> stringList = new ArrayList<>();
+        stringList.add("3");
+        stringList.add("4");
+        stringList.add("5");
+        stringList.add("6");
+        stringList.add("7");
+        //5 6  7    从第三个开始
+        List<String> subList = stringList.subList(2, 5);
+        subList.forEach(System.out::println);
+        subList.add("8");
+        //3 4 5 6 7 8
+        stringList.forEach(System.out::println);
+    }
+
     /**
      * replace取代返回才是新的字符串    */
     @Test
