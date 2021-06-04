@@ -3,6 +3,7 @@ package cn.getech.test;
 import cn.getech.test.dto.*;
 import cn.getech.test.mybatis.User;
 import cn.getech.test.print.PrinterUtil;
+import cn.getech.test.util.HttpClientUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateTime;
@@ -23,10 +24,7 @@ import org.junit.Test;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,6 +38,44 @@ import java.util.stream.Collectors;
 
 public class DemoTest {
 
+    /**
+     * url下载
+     */
+    @Test
+    public void connTest(){
+        //威尔卡
+        String url = "http://kong.poros-platform.172.17.17.60.nip.io/api/poros-oss/file/download?path=http://minio.poros-platform.172.17.17.60.nip.io/poros/1399978363241783298.qdf";
+        //常诚
+        //String url = "http://kong.poros-platform.192.168.51.10.nip.io/api/poros-oss/file/download?path=http://minio.poros-platform.192.168.51.10.nip.io/poros/1399177962492620801.qdf";
+        HttpClientUtil httpsUrlConnectionMessageSender = new HttpClientUtil();
+        HttpURLConnection connection;
+        InputStream is = null;
+        OutputStream os = null;
+        try {
+            connection = httpsUrlConnectionMessageSender.createConnection(url);
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            connection.setRequestMethod("GET");
+            connection.setUseCaches(false);
+            connection.setInstanceFollowRedirects(true);
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+            connection.connect();
+
+            is = connection.getInputStream();
+            byte[] bs = new byte[1024];
+            int len;
+            os = new FileOutputStream(new File("D:\\gu.qdf"));
+            // 开始读取
+            while ((len = is.read(bs)) != -1) {
+                os.write(bs, 0, len);
+            }
+            System.out.println(connection);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
 
     /**
      * Arrays.asList()返回了ArrayList但实际不是我们常用的util包类,而是Arrays包
