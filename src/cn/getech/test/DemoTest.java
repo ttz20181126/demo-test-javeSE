@@ -39,7 +39,16 @@ import java.util.stream.Collectors;
 public class DemoTest {
 
     /**
-     * url下载
+     * 天数，转化成3位
+     */
+    @Test
+    public void stringFormat(){
+        String ruleString = String.format("%03d", Calendar.getInstance().get(Calendar.DAY_OF_YEAR));
+        System.out.println(ruleString);
+    }
+
+    /**
+     * JDK1.7 版本从 url下载
      */
     @Test
     public void connTest(){
