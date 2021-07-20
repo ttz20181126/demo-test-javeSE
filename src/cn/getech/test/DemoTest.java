@@ -38,6 +38,23 @@ import java.util.stream.Collectors;
 
 public class DemoTest {
 
+
+    /***
+     * 创建集合并添加值，一步解决式
+     */
+    @Test
+    public void innerMethodAdd(){
+        List<Long> ruleList = new ArrayList(){
+            {
+                add(3L);
+            }
+        };
+        System.out.println(ruleList.get(0));
+
+        List<Long> list = Arrays.asList(6L,7L);
+        System.out.println(list.get(0));
+    }
+
     /**
      * 天数，转化成3位
      */
