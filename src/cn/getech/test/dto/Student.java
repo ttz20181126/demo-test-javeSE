@@ -1,13 +1,35 @@
 package cn.getech.test.dto;
 
 
-import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
+import java.util.List;
 
+@Getter
+@Setter
 public class Student {
 
     private Integer id;
     private String name;
     private String sex;
+
+    private List<String> points;
+
+
+    public Student(Integer id, String name, String sex) {
+        this.id = id;
+        this.name = name;
+        this.sex = sex;
+    }
+
+    public Student(){}
+    /*public List<String> getPoints() {
+        return points;
+    }
+
+    public void setPoints(List<String> points) {
+        this.points = points;
+    }
 
     public Integer getId() {
         return id;
@@ -33,15 +55,6 @@ public class Student {
         this.sex = sex;
     }
 
-    public Student() {
-    }
-
-    public Student(Integer id, String name, String sex) {
-        this.id = id;
-        this.name = name;
-        this.sex = sex;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,5 +68,5 @@ public class Student {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, sex);
-    }
+    }*/
 }

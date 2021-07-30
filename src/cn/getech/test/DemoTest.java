@@ -39,6 +39,33 @@ import java.util.stream.Collectors;
 public class DemoTest {
 
 
+    /**
+     * 同一个对象，都是一个引用。
+     */
+    @Test
+    public void addressQuote(){
+        List<Student> students = new ArrayList<>();
+        for(int j = 0; j < 3;j++){
+            Student student = new Student();
+            student.setId(j);
+            students.add(student);
+        }
+        List<String> randomList = new ArrayList<>();
+        for(Student s : students){
+            randomList.clear();
+            for(int i = 0; i < 5; i++){
+                int nextInt = new Random().nextInt(10);
+                System.out.println(nextInt);
+                randomList.add(String.valueOf(nextInt));
+                s.setPoints(randomList);
+            }
+        }
+        //["3","0","6","0","7"] 都是。
+        for(Student s : students){
+            System.out.println(JSONUtil.toJsonStr(s.getPoints()));
+        }
+    }
+
     /***
      * 创建集合并添加值，一步解决式
      */
