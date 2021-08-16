@@ -38,6 +38,21 @@ import java.util.stream.Collectors;
 
 public class DemoTest {
 
+    /**
+     * !null 空指针
+     */
+    @Test
+    public void stringBuilderToString(){
+        Boolean flag = null;
+        Boolean flag2 = false;
+        System.out.println(flag);
+        System.out.println(flag2);
+
+        //空指针
+        if(!flag){
+            System.out.println("!null");
+        }
+    }
 
     /**
      * 同一个对象，都是一个引用。
