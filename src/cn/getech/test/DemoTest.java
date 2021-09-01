@@ -38,6 +38,27 @@ import java.util.stream.Collectors;
 
 public class DemoTest {
 
+
+    @Test
+    public void methodInvokeChangeValue(){
+        Student student = new Student();
+        student.setId(2);
+        student.setName("张三");
+        System.out.println("主方法对象哈希:" + student.hashCode());
+        methodInvokeChangeValue2(student);
+        //王五
+        System.out.println(student.getName());
+    }
+
+    /**
+     * student对象的一个声明，引用传递，指向主动调用者
+     * @param student
+     */
+    public void methodInvokeChangeValue2(Student student){
+        System.out.println("方法调用的哈希：" + student.hashCode());
+        student.setName("王五");
+    }
+
     /**
      * !null 空指针
      */
