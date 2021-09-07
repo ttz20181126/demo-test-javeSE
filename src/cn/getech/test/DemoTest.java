@@ -1,5 +1,6 @@
 package cn.getech.test;
 
+import cn.getech.test.constant.ConstantEnum;
 import cn.getech.test.dto.*;
 import cn.getech.test.mybatis.User;
 import cn.getech.test.print.PrinterUtil;
@@ -39,6 +40,18 @@ import java.util.stream.Collectors;
 public class DemoTest {
 
 
+    /**
+     * public static final String
+     * 枚举类 PK 静态变量 提供了更多的内置方法
+     */
+    @Test
+    public void enumTest(){
+        System.out.println(ConstantEnum.THREE_STRING.getValue() + ":" +ConstantEnum.THREE_STRING.getMsg());
+    }
+
+    /**
+     * 方法传参，传递了引用。
+     */
     @Test
     public void methodInvokeChangeValue(){
         Student student = new Student();
@@ -217,6 +230,9 @@ public class DemoTest {
         System.out.println(sbBarcode);
     }
 
+    /**
+     * Map计算下标位置方法，在哈希冲突时形成链表
+     */
     @Test
     public void hashMapLinked(){
 
