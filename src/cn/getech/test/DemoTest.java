@@ -40,6 +40,32 @@ import java.util.stream.Collectors;
 public class DemoTest {
 
 
+    // /1425377260241756161.qdf
+    @Test
+    public void replacePrefixTest(){
+        String url = "http://kong.poros-platform.192.168.51.45.nip.io/api/poros-oss/file/download?path=http://192.168.51.45:30126/minio/app-wms/1425377260241756161.qdf";
+        System.out.println(url.substring(url.lastIndexOf("/")));
+    }
+
+    /**
+     * String不可变，updateString(a,"tan",student);赋值下去，复制了一个a'，它依旧指向常量值，wang，然后
+     */
+    @Test
+    public void referenceTest(){
+        String a = "wang";
+        Student student = new Student();
+        student.setName("first");
+        String modifyValue = updateString(a,"tan",student);
+        System.out.println(a + "~~~~~" + modifyValue + "~~~~~" + student.getName());//wang~~~~~zhang~~~~~secode
+    }
+    public String updateString(String a,String b,Student student){
+        a = "zhang";
+        b = "li";
+        student.setName("secode");
+        return a;
+    }
+
+
     /**
      * public static final String
      * 枚举类 PK 静态变量 提供了更多的内置方法
