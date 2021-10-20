@@ -39,7 +39,24 @@ import java.util.stream.Collectors;
 
 public class DemoTest {
 
+    //年份代表字段,从2010开始。
+    public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
+    /**
+     * 年份代表字段的处理
+     */
+    @Test
+    public void getYearSymbol(){
+        Integer yyyy = Integer.parseInt(new SimpleDateFormat("yyyy").format(new Date()));
+        int a = (yyyy - 2010)%yearSymbol.length;
+
+        System.out.println(yyyy + " ,余数 " + a + ",取值：" + yearSymbol[a]);
+
+    }
+
+    /***
+     * String.lastIndexOf("/")获取最后一个/的位置
+     */
     // /1425377260241756161.qdf
     @Test
     public void replacePrefixTest(){
