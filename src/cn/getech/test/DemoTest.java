@@ -43,6 +43,17 @@ public class DemoTest {
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
     /**
+     * 项目文件的绝对路径。
+     * //D:\workspace\demo-test-javaSE
+     */
+    @Test
+    public void testObtainDir(){
+        String property = System.getProperty("user.dir");
+        System.out.println(property);
+    }
+
+
+    /**
      * 年份代表字段的处理
      */
     @Test
