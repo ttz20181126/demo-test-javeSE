@@ -52,6 +52,8 @@ public class DemoTest {
             mcode = "-";
         }
         System.out.println(mcode);
+
+        System.out.println( new SimpleDateFormat("yyyy年MM月dd日").format(new Date()));
     }
 
     /**
