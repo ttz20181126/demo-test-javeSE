@@ -43,6 +43,18 @@ public class DemoTest {
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
     /**
+     * 第五位为L/R就显示对应，其他显示-
+     */
+    @Test
+    public void justifyCategory(){
+        String mcode = "1328R495".substring(4,5);
+        if(!"L".equalsIgnoreCase(mcode) &&  !"R".equalsIgnoreCase(mcode)){
+            mcode = "-";
+        }
+        System.out.println(mcode);
+    }
+
+    /**
      * 项目文件的绝对路径。
      * //D:\workspace\demo-test-javaSE
      */
