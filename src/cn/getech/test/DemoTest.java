@@ -43,6 +43,40 @@ public class DemoTest {
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
     /**
+     * 获取当前的年月日
+     */
+    @Test
+    public void getYearMonthDate(){
+        Calendar cal = Calendar.getInstance();
+        String twoBitsYear = String.valueOf(cal.get(Calendar.YEAR)).substring(2, 4);
+        int month = cal.get(Calendar.MONTH) + 1;
+        String monthStr = String.valueOf(month);
+        if(month >= 10){
+            if(month == 10){
+                monthStr = "A";
+            }else if(month == 11){
+                monthStr = "B";
+            } else if(month == 12){
+                monthStr = "C";
+            }
+        }
+        String dayStr = String.format("%02d",cal.get(Calendar.DAY_OF_MONTH));
+        String dateCombination = twoBitsYear + monthStr + dayStr;
+        System.out.println("结果：" + dateCombination);
+
+        Calendar now = Calendar.getInstance();
+        System.out.println("年: " + String.valueOf(now.get(Calendar.YEAR)).substring(2,4));
+        System.out.println("月: " + (now.get(Calendar.MONTH) + 1) + "");
+        System.out.println("日: " + String.format("%02d",now.get(Calendar.DAY_OF_MONTH)));
+        System.out.println("时: " + now.get(Calendar.HOUR_OF_DAY));
+        System.out.println("分: " + now.get(Calendar.MINUTE));
+        System.out.println("秒: " + now.get(Calendar.SECOND));
+        System.out.println("当前时间毫秒数：" + now.getTimeInMillis());
+        System.out.println(now.getTime());
+    }
+
+
+    /**
      * 第五位为L/R就显示对应，其他显示-
      */
     @Test
