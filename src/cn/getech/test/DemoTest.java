@@ -42,6 +42,18 @@ public class DemoTest {
     //年份代表字段,从2010开始。
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
+
+    /**
+     * File获取文件路径的方法测试
+     */
+    @Test
+    public void testFilePath(){
+        File file = new File("src");
+        System.out.println(file.getParent());//null
+        System.out.println(file.getPath());//src
+        System.out.println(file.getAbsoluteFile());//D:\workspace\demo-test-javaSE\src
+    }
+
     /**
      * 获取当前的年月日
      */
