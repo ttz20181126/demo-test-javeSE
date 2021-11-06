@@ -44,6 +44,20 @@ public class DemoTest {
 
 
     /**
+     * linux获取jar的路径
+     */
+    @Test
+    public void linuxGetJarPath(){
+        String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+        String[] pathSplit = path.split("/");
+        String jarName = pathSplit[pathSplit.length - 1];
+        String jarPath = path.replace(jarName, "");
+        System.out.println(path);// /D:/workspace/demo-test-javaSE/out/production/demo-test/
+        System.out.println(jarName);// demo-test
+        System.out.println(jarPath);// /D:/workspace/-javaSE/out/production//
+    }
+
+    /**
      * File获取文件路径的方法测试
      */
     @Test
