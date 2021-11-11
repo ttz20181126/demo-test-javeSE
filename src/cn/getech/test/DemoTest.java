@@ -42,6 +42,19 @@ public class DemoTest {
     //年份代表字段,从2010开始。
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
+    @Test
+    public void testPmAm(){
+        Calendar calCurrent = Calendar.getInstance();
+        int hour = calCurrent.get(Calendar.HOUR_OF_DAY);//0-11  24小时制
+        //int hour = calCurrent.get(Calendar.HOUR);//0-11   12小时制
+        int minute = calCurrent.get(Calendar.MINUTE);
+        String hourSymbol = " AM";
+        if(hour >= 12){
+            hourSymbol = " PM";
+        }
+        String comResult = hour + ":" + minute + hourSymbol;
+        System.out.println(comResult);
+    }
 
     /**
      * linux获取jar的路径
