@@ -35,6 +35,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.*;
 import java.util.function.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class DemoTest {
@@ -42,6 +43,35 @@ public class DemoTest {
     //年份代表字段,从2010开始。
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
+    /**
+     * 字符串截取后面五位，去除-
+     */
+    @Test
+    public void testSubstringLast(){
+        String lineno = "ZS/C2-09";
+        lineno = "c209";
+        lineno = "c2-09";
+        String substring;
+        if(lineno.length() >= 5){
+            if(lineno.contains("-")){
+                substring = lineno.substring(lineno.length() - 5, lineno.length());
+                //substring = substring.replace('-', '');
+                Pattern p = Pattern.compile("-");
+                substring = p.matcher(substring).replaceAll("").trim();
+
+            }else{
+                substring = lineno.substring(lineno.length() - 4, lineno.length());
+            }
+
+        }else{
+            substring = lineno;
+        }
+        System.out.println(substring);
+    }
+
+    /**
+     * PM:下午    AM：上午
+     */
     @Test
     public void testPmAm(){
         Calendar calCurrent = Calendar.getInstance();
