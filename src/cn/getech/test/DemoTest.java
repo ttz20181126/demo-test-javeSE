@@ -44,6 +44,44 @@ public class DemoTest {
     //年份代表字段,从2010开始。
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
+    /**
+     * instanceof CharSequence
+     */
+    @Test
+    public void testCharSequence(){
+        String a = "zhang";
+        System.out.println(a instanceof CharSequence);
+    }
+
+
+    /***
+     * 时分秒获取子串。
+     * %02d才会补零，%2d一位数是空格
+     * %00d 报错java.util.DuplicateFormatFlagsException: Flags = '0'
+     */
+    @Test
+    public void obtainSecondsLastTwoBits(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+        String format = simpleDateFormat.format(new Date());
+        System.out.println("时分秒：" + format);
+
+        String hourMinutes = format.substring(0,6);
+        System.out.println(hourMinutes);
+
+        //获取时分秒的最后两位数
+        Integer secondsNum = Integer.parseInt(format.substring(7,8));
+        System.out.println("秒针:" + secondsNum);
+
+        String codeNum = "4258R012910 ";
+        codeNum = codeNum +  hourMinutes + String.format("%02d", secondsNum + 1 - 1);
+        System.out.println(codeNum);
+
+
+        String codeNum2 = "4258R012910 ";
+        codeNum = codeNum.replace("-serial-field-",String.format("%00d",4));
+        System.out.println(codeNum);
+
+    }
 
     /**
      * StringBuffer取代不存在的的字符串
