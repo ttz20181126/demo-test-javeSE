@@ -10,6 +10,7 @@ import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.HexUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -49,8 +50,20 @@ public class DemoTest {
      */
     @Test
     public void testCharSequence(){
+
+        //打印日志补字段数据 id = 152868    153614    153662     153747     153922
+        //String currentYear = String.valueOf(DateUtil.year(new Date()));
+        //String year = currentYear.substring(currentYear.length() - 2);
+        //String dayOfYear = String.format("%03d", Calendar.getInstance().get(Calendar.DAY_OF_YEAR));
+        //System.out.println(year + "----" + dayOfYear);  //22----045
+
         String a = "zhang";
-        System.out.println(a instanceof CharSequence);
+        System.out.println(a instanceof CharSequence);//true
+
+        Map<String,String> map = new HashMap<>();
+        if(map instanceof Iterable || map instanceof Iterator || ArrayUtil.isArray(map)){
+            System.out.println("====================");//不打印
+        }
     }
 
 
