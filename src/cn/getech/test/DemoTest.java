@@ -46,6 +46,23 @@ public class DemoTest {
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
     /**
+     * 隔2换行
+     */
+    @Test
+    public void newlineEachTwo(){
+        String value = "";
+        for (int i = 0; i < 10; i++) {
+            if (i == 10 - 1) {
+                value += 4444;
+            } else {
+                value += (( (i+1) % 2 == 0) && i != 0) ? 3333 + "\n" : 2222 + " ";
+            }
+        }
+        System.out.println(value);
+    }
+
+
+    /**
      * instanceof CharSequence
      */
     @Test
