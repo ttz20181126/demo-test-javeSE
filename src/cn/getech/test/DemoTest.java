@@ -45,6 +45,22 @@ public class DemoTest {
     //年份代表字段,从2010开始。
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
+
+    /***
+     * 计算次数
+     */
+    @Test
+    public void countStep(){
+        int a = (800 + 1000 -1)/1000;
+        System.out.println(a);//1
+
+        int b = (1001 + 1000 -1)/1000;
+        System.out.println(b);//2
+
+        int c = (999 + 1000 -1)/1000;
+        System.out.println(c);//1
+    }
+
     /**
      * 隔2换行
      */
