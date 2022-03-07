@@ -46,6 +46,19 @@ public class DemoTest {
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
 
+    /**
+     * HashMap用long做键是否存在问题。
+     */
+    @Test
+    public void longKeyMap(){
+        Map<Long,String> classNoName = new HashMap<>();
+        classNoName.put(11111L,"张三");
+        classNoName.put(12212313232L,"张三2");
+        classNoName.put(1123323232111L,"张三3");
+        System.out.println(classNoName.get(1123323232111L));
+    }
+
+
     /***
      * 计算次数
      */
