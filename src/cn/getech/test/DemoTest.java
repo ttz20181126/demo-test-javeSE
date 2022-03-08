@@ -23,7 +23,6 @@ import com.linuxense.javadbf.DBFReader;
 import com.linuxense.javadbf.DBFWriter;
 import org.junit.Test;
 
-import javax.xml.transform.Source;
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -45,6 +44,26 @@ public class DemoTest {
     //年份代表字段,从2010开始。
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
+
+    /**
+     * Java是值传递
+     * 值传递是会拷贝一个副本，做修改
+     * 传对象是，也是值传递，但是传递的是这个引用的地址，拷贝的副本和传入的参数两者指向的是同一个地址，副本去修改，原指向的值也修改了。
+     */
+    @Test
+    public void valueTrans(){
+        int a = 1;
+        String str = "zhangsan";
+        changeValue(a,str);
+        System.out.println(a);  //1
+        System.out.println(str);  //zhangsan
+    }
+
+    public void changeValue(int a,String s){
+        a = 3;
+        s = "lisi";
+
+    }
 
     /**
      * HashMap用long做键是否存在问题。
