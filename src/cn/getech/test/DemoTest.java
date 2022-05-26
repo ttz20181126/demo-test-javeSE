@@ -46,6 +46,61 @@ public class DemoTest {
 
 
     /**
+     * list添加基本数据类型，后修改不变，引用类型会变。
+     */
+    @Test
+    public void listAdd(){
+
+        List<String> strs = new ArrayList<>();
+        String str = "1111";
+        strs.add(str);
+        str = "2222";
+        System.out.println(strs.get(0));//1111
+
+
+        List<User> userList = new ArrayList<>();
+        User user = new User();
+        userList.add(user);
+        user.setUsername("ssss");
+        System.out.println(JSONUtil.toJsonStr(userList));//[{"age":0,"username":"ssss"}]
+    }
+
+    /***
+     * 分隔字符
+     */
+    @Test
+    public void splitChar(){
+        String res = "车灯   注：1   注：2";
+        String pname1 = "";
+        String pname2 = "";
+        if(res.contains("注")){
+            pname1 = res.substring(0,res.indexOf("注"));
+            pname2 = res.substring(res.indexOf("注"));
+        }else{
+            pname1 = res;
+        }
+        System.out.println(pname1 + "---------" + pname2);
+    }
+
+
+    /**
+     * map赋一个字符变量，变量被赋予不同的值。
+     */
+    @Test
+    public void putRepeatValue(){
+        Map<String,String> map = new HashMap<>();
+        String factory = "100";
+        map.put("factory",factory);
+        factory = "company";
+        map.put("company",factory);
+        for (String key : map.keySet()) {
+            //factory :100
+            //company :company
+            System.out.println(key + " :" + map.get(key));
+        }
+    }
+
+    /**
      * Java是值传递
      * 值传递是会拷贝一个副本，做修改
      * 传对象是，也是值传递，但是传递的是这个引用的地址，拷贝的副本和传入的参数两者指向的是同一个地址，副本去修改，原指向的值也修改了。
