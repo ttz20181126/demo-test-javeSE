@@ -17,6 +17,7 @@ import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.beust.jcommander.internal.Lists;
 import com.linuxense.javadbf.DBFException;
 import com.linuxense.javadbf.DBFField;
 import com.linuxense.javadbf.DBFReader;
@@ -43,6 +44,28 @@ public class DemoTest {
 
     //年份代表字段,从2010开始。
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
+
+
+    /**
+     * now.minusMinutes(10);获取某个时刻的前10分钟。
+     */
+    @Test
+    public void jodaTimeTest(){
+        Date date = new Date();
+        System.out.println(date);//Tue May 31 10:15:02 CST 2022
+        org.joda.time.DateTime now = new org.joda.time.DateTime();
+        System.out.println(now);//2022-05-31T10:15:02.137+08:00
+        List<Date> reList = Lists.newArrayList();
+        org.joda.time.DateTime dateTime = now.minusMinutes(10);
+        reList.add(dateTime.toDate());
+        reList.add(now.toDate());
+        Date date1 = reList.get(0);
+        Date date2 = reList.get(1);
+        long time = reList.get(0).getTime();
+        System.out.println(date1);//Tue May 31 10:05:02 CST 2022
+        System.out.println(date2);//Tue May 31 10:15:02 CST 2022
+        System.out.println(time);//1653962702137
+    }
 
 
     /**
