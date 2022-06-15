@@ -45,6 +45,32 @@ public class DemoTest {
     //年份代表字段,从2010开始。
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
+    /**
+     * float的加法
+     */
+    @Test
+    public void testFloat(){
+        Float a = 0f;
+        Float b = 2.3f;
+        Float c = 2f;
+        Float d = a + b;
+        Float e = b + c;
+        System.out.println(d  + " "   + e);//2.3 4.3
+    }
+
+    /**
+     * 三目运算符
+     */
+    @Test
+    public void testOperationRes(){
+        String s = testOperation();
+        System.out.println(s);//非0和1返工   0标准  1外协
+    }
+
+    public String  testOperation(){
+        int a = 4;
+        return a == 0?"标准":a == 1 ?"外协":"返工";
+    }
 
     /**
      * now.minusMinutes(10);获取某个时刻的前10分钟。
