@@ -2,6 +2,7 @@ package cn.getech.test;
 
 import cn.getech.test.constant.ConstantEnum;
 import cn.getech.test.dto.*;
+import cn.getech.test.mybatis.JDBC;
 import cn.getech.test.mybatis.User;
 import cn.getech.test.print.PrinterUtil;
 import cn.getech.test.util.HttpClientUtil;
@@ -25,6 +26,7 @@ import com.linuxense.javadbf.DBFWriter;
 import org.junit.Test;
 
 import java.io.*;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.*;
@@ -44,6 +46,25 @@ public class DemoTest {
 
     //年份代表字段,从2010开始。
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
+
+    @Test
+    public void reflect() throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
+
+        //https://www.cnblogs.com/ht1990/p/15356054.html
+        //Class<?> aClass = Class.forName("cn.getech.test.mybatis.JDBC");
+
+        Class<JDBC> jdbcClass = JDBC.class;
+        Field reportMap = jdbcClass.getDeclaredField("reportMap");
+        reportMap.setAccessible(true);
+        Object o = reportMap.get(new JDBC());
+        System.out.println("获取私有属性值:" + o);    //{1=333}
+        Map<String, String> o2 = (Map<String, String>)reportMap.get(new JDBC());
+        o2.clear();
+        System.out.println(o2.size());
+
+    }
+
+
 
     /**
      * float的加法
