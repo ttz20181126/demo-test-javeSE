@@ -48,6 +48,13 @@ public class DemoTest {
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
     @Test
+    public void substitute(){
+        String electrical = "0.4-1.1Ω.cm";
+        System.out.println(electrical.replace('-','≤'));
+    }
+
+
+    @Test
     public void reflect() throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
 
         //https://www.cnblogs.com/ht1990/p/15356054.html
