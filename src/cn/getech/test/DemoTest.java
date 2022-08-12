@@ -47,10 +47,15 @@ public class DemoTest {
     //年份代表字段,从2010开始。
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
+    /**
+     * 字符串字符替代   截取
+     */
     @Test
     public void substitute(){
         String electrical = "0.4-1.1Ω.cm";
         System.out.println(electrical.replace('-','≤'));
+        String replace = electrical.replace('-', '≤');//0.4≤1.1Ω.cm
+        System.out.println(replace.substring(replace.indexOf("≤"),replace.length()-3));//≤1.1Ω
     }
 
 
