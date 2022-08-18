@@ -48,14 +48,70 @@ public class DemoTest {
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
     /**
+     * list.stream().collect(Collectors.toMap(Student::getId, Function.identity()));
+     * Function.identity()  键有重复会报错
+     */
+    @Test
+    public void identifiedConvert(){
+        Student student = new Student();
+        student.setId(1);
+        student.setName("张三");
+        Student student2 = new Student();
+        student2.setId(2);
+        student2.setName("李四");
+        List<Student> list = new ArrayList<>();
+        list.add(student);
+        list.add(student2);
+        Map<Integer, Student> collect = list.stream().collect(Collectors.toMap(Student::getId, Function.identity()));
+        System.out.println(JSON.toJSONString(collect));
+
+
+        Student student3 = new Student();
+        student3.setId(3);
+        student3.setName("王麻子");
+        Student student4 = new Student();
+        student4.setId(3);
+        student4.setName("张胖子");
+        List<Student> list2 = new ArrayList<>();
+        list2.add(student3);
+        list2.add(student4);
+        Map<Integer, String> collect1 = list2.stream().collect(Collectors.toMap(Student::getId, v -> v.getName(), (v1, v2) -> v1 + v2));
+        System.out.println(collect1);
+        Map<Integer, Student> collect2 = list2.stream().collect(Collectors.toMap(Student::getId, Function.identity()));
+        System.out.println(JSON.toJSONString(collect2));
+
+    }
+
+    /**
      * 字符串字符替代   截取
      */
     @Test
     public void substitute(){
         String electrical = "0.4-1.1Ω.cm";
+        //0.4≤1.1Ω.cm  ‘-’替换成‘≤’
         System.out.println(electrical.replace('-','≤'));
-        String replace = electrical.replace('-', '≤');//0.4≤1.1Ω.cm
-        System.out.println(replace.substring(replace.indexOf("≤"),replace.length()-3));//≤1.1Ω
+
+        //≤1.1Ω        ‘-’替换成‘≤’截取‘≤’后面
+        String replace = electrical.replace('-', '≤');
+        System.out.println(replace.substring(replace.indexOf("≤"),replace.length()-3));
+
+        //截取部分描述
+        String desc = "硅片/P/G/210.00/295.00/155/0.4-1.1/GA+XXA1";
+        System.out.println(desc.substring(0,24));
+
+        //ZB-A 截取到最后一个‘-’
+        String machineName = "ZB-A-01";
+        System.out.println(machineName.substring(0,machineName.lastIndexOf("-")));
+
+        //-A
+        String area = "ZB-A";
+        System.out.println(area.substring(area.lastIndexOf("-")));
+
+        //CN291010000008,CN251010011031
+        String zzConsumableName = "CN291010000008,CN251010011031,";
+        zzConsumableName = zzConsumableName.substring(0,zzConsumableName.length()-1);
+        System.out.println(zzConsumableName);
+
     }
 
 
