@@ -47,6 +47,38 @@ public class DemoTest {
     //年份代表字段,从2010开始。
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
+
+    /**
+     * 日期类型
+     * Date和LocalDateTime
+     * 连接数据库url通常配置UTC时区，
+     * 那么插入的时候要主机GTM + 8,LocalDateTime不需要
+     */
+    @Test
+    public void testDate(){
+        Date date = new Date();
+        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date));
+
+        LocalDateTime localDateTime = LocalDateTime.now();
+        System.out.println(localDateTime);
+    }
+
+    /**
+     *   / 取结果的整数
+     *   % 取结果的余数
+     */
+    @Test
+    public void division(){
+        System.out.println(4/10);  //0
+        System.out.println(10/10); //1
+        System.out.println(11/10); //1
+        System.out.println(11%10); //1
+        System.out.println(4%10);  //4
+        //int pageNo = total%pageSize == 0? total/pagesize : total/pageSize + 1;
+
+    }
+
+
     /**
      * list.stream().collect(Collectors.toMap(Student::getId, Function.identity()));
      * Function.identity()  键有重复会报错
@@ -77,6 +109,9 @@ public class DemoTest {
         list2.add(student4);
         Map<Integer, String> collect1 = list2.stream().collect(Collectors.toMap(Student::getId, v -> v.getName(), (v1, v2) -> v1 + v2));
         System.out.println(collect1);
+        /**
+         * Function.identity()重复的键，会报错
+         */
         Map<Integer, Student> collect2 = list2.stream().collect(Collectors.toMap(Student::getId, Function.identity()));
         System.out.println(JSON.toJSONString(collect2));
 
