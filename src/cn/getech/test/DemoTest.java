@@ -47,6 +47,23 @@ public class DemoTest {
     //年份代表字段,从2010开始。
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
+    /**
+     * idea本地调试in的入参
+     * 先notepad将(String)替换成空格，
+     * 再用此工具，加上单引号化为in的入参
+     */
+    @Test
+    public void addSplit(){
+        String oldStr = "F04000001637  , F04000001933  , F04000001984  , F04000001985  , F04000002028  , F04000002036  , F04000002037  , F04000002038  , F04000002040  , F04000002041  , F04000002089  , F04000001501  , F04000001503  , F04000001563  , F04000000740  , F04000001766  , F04000001767  , F04000001768  , F04000001769  , F04000001770  , F04000001771  , F04000001905  , F04000001907  , F04000001924  , F04000001932  , F04000001934  , F04000001935  , F04000001936  , F04000001982  , F04000001983  , F04000001986  , F04000002079  , F04000002084  , F04000002087  , F04000002092  , F04000002093  , F04000002094  ,";
+        String[] split = oldStr.split(",");
+        StringBuffer stringBuffer = new StringBuffer();
+        for(int i = 0; i < split.length;i++){
+            stringBuffer.append("\'").append(split[i].trim()).append("\'").append(",");
+        }
+        String s = stringBuffer.toString();
+        System.out.println(s.substring(0,s.length()-1));
+    }
+
 
     /**
      * 日期类型
