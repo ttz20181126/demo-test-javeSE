@@ -47,6 +47,97 @@ public class DemoTest {
     //年份代表字段,从2010开始。
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
+
+    /**
+     * 对象转json数组
+     *       json数组对应的字符串传输,都需要双引号。用反斜杠转义。
+     * {
+     * 	"bskey": null,
+     * 	"ifywid": "DJKProductOutOfStockRequest",
+     * 	"sysid": "YC4MES",
+     * 	"zdata": "[{
+     *
+     *         \"SpliceType\":\"1\",
+     *         \"Num\":142.357,
+     * 		   \"BoxCode\":\"G2208M0613020000\",
+     * 		   \"BarCodeType\":\"serialNumber\",
+     * 		   \"ProductName\":\"方/P/G/210/295/GA+2/0.2-1.1/B12/1/--\",
+     * 		   \"Size\":\"方/P/G/210/295/GA+2/0.2-1.1/B12/1/--\",
+     * 		   \"UnitName\":\"KG\",
+     * 		   \"CateName\":\"F02010\",
+     * 		  \"BatchNum\":\"9999999999\",
+     *         \"SupName\":null,
+     *         \"PrDefine5\":null,
+     *         \"IeDefine8\":\"9999999999\",
+     *         \"InStorageTime\":\"2022-08-25T10:42:41.2639616+08:00\",
+     *         \"Remark\":null,
+     *         \"PrDefine7\":\"1000020641\",
+     *         \"LGORT\":\"R016\",
+     *         \"MESWorkOrder\":\"100002064112\",
+     *         \"MachineId\":\"ZB-F\",
+     *         \"TransportJobName\":\"20220825101217254000\",
+     *         \"TargetLocation\":null,
+     *         \"TaskId\":null,
+     *         \"UserId\":null,
+     *         \"SAPTaskId\":null,
+     *         \"SAPTaskLn\":null,
+     *         \"Location\":\"单晶回温库\",
+     *         \"outDate\":\"2022-08-25T10:42:41.2639643+08:00\",
+     *         \"batchNumber\":\"1\",
+     *         \"orderNumber\":\"ZZ9BA220819030Z\",
+     *         \"crystalNo\":\"G2208M0613020000\",
+     *         \"norms\":\"Φ295×210\",
+     *         \"StorageLength\":\"894.000\",
+     *         \"crystalLength\":\"894.000\",
+     *         \"chipLength\":\"0.000\",
+     *         \"weight\":\"91.982\",
+     *         \"oblique\":\"0.000\",
+     *         \"TheoryWeight\":\"142.357\",
+     *         \"CustomerType\":\"GA+2\",
+     *         \"VerificationRemarks\":\"\",
+     *         \"factoryCard\":\"1021\",
+     *         \"MonocrystalNo\":\"G2208M0613020000;\",
+     *         \"StickType\":\"方棒\",
+     *         \"ProductGreySkin\":\"0\",
+     *         \"SquareBarGreySkin\":\"0\",
+     *         \"LineMarks\":\"0\",
+     *         \"KnifeMarks\":\"0\",
+     *         \"Scratches\":\"0\",
+     *         \"NotGround\":\"0\",
+     *         \"SpliceLength\":\"894\",
+     *         \"SpliceWidth\":\"0\",
+     *         \"CLXS\":null,
+     *         \"WMSTaskId\":\"YCCK002828\",
+     *         \"SupNo\":null,
+     *         \"Torr\":null
+     *     }]"
+     * }
+     *
+     *
+     */
+    @Test
+    public void  jsonArrayToString(){
+        Student student = new Student();
+        student.setId(3);
+        student.setName("zhangshan");
+        List<Student> studentList = new ArrayList<>();
+        studentList.add(student);
+        String s = JSONArray.toJSONString(studentList);
+        System.out.println(s);   //[{"id":3,"name":"zhangshan"}]
+    }
+
+    /**
+     * 仅仅获取年月日中的日
+     */
+    @Test
+    public void obtainDay(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        System.out.println(sdf.format(new Date()));
+
+        SimpleDateFormat sdf2 = new SimpleDateFormat("dd");
+        System.out.println(sdf2.format(new Date()));
+    }
+
     /**
      * idea本地调试in的入参
      * 先notepad将(String)替换成空格，
