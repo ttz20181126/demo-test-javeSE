@@ -47,6 +47,17 @@ public class DemoTest {
     //年份代表字段,从2010开始。
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
+    /***
+     * 托盘取中间号段
+     */
+    @Test
+    public void subStringMiddleContent(){
+        String processGroup = "YB220826-L02-0001";
+        int i = processGroup.indexOf("-");
+        int j = processGroup.lastIndexOf("-");
+        System.out.println("i=" + i + ",j = " + j);
+        System.out.println(processGroup.substring(i + 1,j));
+    }
 
     /**
      * 对象转json数组
