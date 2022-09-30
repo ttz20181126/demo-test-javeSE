@@ -47,11 +47,39 @@ public class DemoTest {
     //年份代表字段,从2010开始。
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
+
+    /**
+     * 手写集合工具类使用集合工具类
+     */
+    @Test
+    public void useAssertSize(){
+        List<User> arrayList = new ArrayList<>();
+        System.out.println(new DemoTest().assertSize(arrayList,1));
+        List<User> arrayList2 = null;
+        System.out.println(new DemoTest().isEmpty(arrayList));
+    }
+
+
+    public boolean assertSize(List<?> list,int size) {
+        return list.size() == size;
+    }
+
+    public boolean isEmpty(Collection<?> collection) {
+        return collection == null || collection.isEmpty();
+    }
+
+
     /***
      * 托盘取中间号段
      */
     @Test
     public void subStringMiddleContent(){
+
+        //:后的值
+        String text = "WMS:TEXsvr11";
+        System.out.println(text.substring(0,text.indexOf(":")));
+
+        //托盘号取出号段--L02
         String processGroup = "YB220826-L02-0001";
         int i = processGroup.indexOf("-");
         int j = processGroup.lastIndexOf("-");
