@@ -49,6 +49,49 @@ public class DemoTest {
 
 
     /**
+     * 从二维码截图箱码
+     */
+    @Test
+    public void subCartonInCartonBox(){
+        String cartonInCartonBox = "SN:YBG295P-221009-WD33064SN1:YBG295P-221009-WD33064SN2:....";
+        System.out.println(cartonInCartonBox.substring(cartonInCartonBox.indexOf("SN:") + 3,cartonInCartonBox.indexOf("SN1")));
+    }
+
+
+    /**
+     * 截取两头   LIKE  A%  &&  LIKE  %B
+     *  productSpecQw.likeRight(ProductSpec::getDescription,description.substring(0,24));
+     *  productSpecQw.likeLeft(ProductSpec::getDescription, description.substring(description.lastIndexOf("/")));
+     */
+    @Test
+    public void likeRightLeft(){
+        String desc = "硅片/P/G/218.2/306.60/150/0.4-1.1/GA+PXA1";
+        System.out.println(desc.substring(0,24));  //硅片/P/G/218.2/306.60/150/
+        System.out.println(desc.substring(desc.lastIndexOf("/")));// /GA+PXA1
+
+    }
+
+
+    /***
+     * indexOf找不到就是-1.从0开始
+     */
+    @Test
+    public void findInStr(){
+        String barcode = "YBG247P-220912-WB10001";
+        int i = barcode.indexOf("-WB1");
+        System.out.println(i);//14
+
+        String barcode2 = "YBG247P-220912-W20001";
+        int j = barcode2.indexOf("-WB1");
+        System.out.println(j);//-1
+
+        String barcode3 = "-WB1-YBG247P-220912-W20001";
+        int z = barcode3.indexOf("-WB1");
+        System.out.println(z);//0
+
+    }
+
+    /**
      * 手写集合工具类使用集合工具类
      */
     @Test
