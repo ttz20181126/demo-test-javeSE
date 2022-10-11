@@ -23,6 +23,7 @@ import com.linuxense.javadbf.DBFException;
 import com.linuxense.javadbf.DBFField;
 import com.linuxense.javadbf.DBFReader;
 import com.linuxense.javadbf.DBFWriter;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
 import java.io.*;
@@ -47,6 +48,30 @@ public class DemoTest {
     //年份代表字段,从2010开始。
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
+
+    /**
+     * org.apache.commons.lang3
+     * isNotBlank   如果为null，length=0,当length为0或者存在空白返回true，[兼容了isNotEmpty并处理了内容为空白的]
+     * isNotEmpty   如果为null或者lenth=0，返回true
+     */
+    @Test
+    public void langStringUtils(){
+        String str1 = null;
+        String str2 = "";
+        String str3 = " ";
+        String str4 = "ABC";
+
+        System.out.println(StringUtils.isNotBlank(str1));//false
+        System.out.println(StringUtils.isNotBlank(str2));//false
+        System.out.println(StringUtils.isNotBlank(str3));//false
+        System.out.println(StringUtils.isNotBlank(str4));//true
+
+        System.out.println(StringUtils.isNotEmpty(str1));//false
+        System.out.println(StringUtils.isNotEmpty(str2));//false
+        System.out.println(StringUtils.isNotEmpty(str3));//true
+        System.out.println(StringUtils.isNotEmpty(str4));//true
+
+    }
 
     /**
      * 从二维码截图箱码
