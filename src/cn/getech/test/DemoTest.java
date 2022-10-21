@@ -4,8 +4,10 @@ import cn.getech.test.constant.ConstantEnum;
 import cn.getech.test.dto.*;
 import cn.getech.test.mybatis.JDBC;
 import cn.getech.test.mybatis.User;
+import cn.getech.test.mybatis.Wife;
 import cn.getech.test.print.PrinterUtil;
 import cn.getech.test.util.HttpClientUtil;
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateTime;
@@ -47,6 +49,46 @@ public class DemoTest {
 
     //年份代表字段,从2010开始。
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
+
+
+    /**
+     * 1: [{"id":1,"age":4,"username":"zzz"},{"id":1,"age":4,"username":"zzz"}]
+     * 1:[{"id":0,"age":4,"username":"zzz"},{"id":1,"age":4,"username":"zzz"}]
+     */
+    @Test
+    public void modifyObjectToList(){
+        User user = new User();
+        user.setId(3);
+        user.setUsername("zzz");
+        user.setAge(4);
+        List<String> hobbyList = Arrays.asList("篮球","足球","乒乓球");
+        user.setHobbyList(hobbyList);
+        Wife wife = new Wife();
+        wife.setWifeName("西施");
+        wife.setWifeSize("D");
+        List<Wife> wifeArrayList = new ArrayList<>();
+        wifeArrayList.add(wife);
+        user.setWifeList(wifeArrayList);
+
+        //没有创建对象，最终指向的同一个对象，打印的List元素是同一对象
+        List<User> users = new ArrayList<>();
+        for(int i = 0; i < 2;i++){
+            user.setId(i);
+            users.add(user);
+        }
+        System.out.println("1:" + JSONUtil.toJsonStr(users));
+
+        //1.创建对象，拷贝属性值有用    2.List<String>、List<Wife>都可以复制。
+        List<User> users2 = new ArrayList<>();
+        for(int i = 0; i < 2;i++){
+            User u = new User();
+            BeanUtil.copyProperties(user,u);
+            u.setId(i);
+            users2.add(u);
+        }
+        System.out.println("2:" + JSONUtil.toJsonStr(users2));
+
+    }
 
 
     /**
