@@ -52,6 +52,18 @@ public class DemoTest {
 
 
     /**
+     * java.lang.StringIndexOutOfBoundsException: String index out of range: -4
+     */
+    @Test
+    public void subString(){
+        String a = "F04000000744 and ";
+        System.out.println(a.substring(0,a.length()-4));
+
+        String b  = "";
+        System.out.println(b.substring(b.length() - 4,b.length() - 1));
+    }
+
+    /**
      * 1: [{"id":1,"age":4,"username":"zzz"},{"id":1,"age":4,"username":"zzz"}]
      * 1:[{"id":0,"age":4,"username":"zzz"},{"id":1,"age":4,"username":"zzz"}]
      */
