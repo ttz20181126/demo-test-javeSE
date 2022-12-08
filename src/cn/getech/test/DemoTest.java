@@ -51,6 +51,18 @@ public class DemoTest {
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
 
+    /***
+     *
+     * {""} json解析时报错
+     * expect ':' at 0, name
+     */
+    @Test
+    public void jsonObjectParse() {
+        String jsonString = "{\"\"}";
+        JSONObject jObject = (JSONObject) JSONObject.parse(jsonString);
+    }
+
+
     /**
      * java.lang.StringIndexOutOfBoundsException: String index out of range: -4
      */
@@ -59,8 +71,13 @@ public class DemoTest {
         String a = "F04000000744 and ";
         System.out.println(a.substring(0,a.length()-4));
 
+        //NULL POINTER
         String b  = "";
         System.out.println(b.substring(b.length() - 4,b.length() - 1));
+
+        //NULL POINTER
+        Map<String,String> hashmap = null;
+        System.out.println(hashmap.get("PORTNAME"));
     }
 
     /**
