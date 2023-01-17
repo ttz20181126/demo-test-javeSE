@@ -68,6 +68,12 @@ public class DemoTest {
      */
     @Test
     public void subString(){
+        String boxName = "G12+P306.6-T150G-230105-00102";
+        System.out.println(boxName.substring(0,4));
+        String boxName2 = "G12-P306.6-T150G-230105-00102";
+        String productSpecType = boxName2.substring(0,4);
+        System.out.println(productSpecType.substring(0,productSpecType.length()-1));
+
         String a = "F04000000744 and ";
         System.out.println(a.substring(0,a.length()-4));
 
