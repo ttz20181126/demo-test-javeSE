@@ -51,6 +51,82 @@ public class DemoTest {
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
 
+    /**
+     * Double作减法的精度问题
+     * 省去小数
+     */
+    @Test
+    public void testDouble(){
+        Double a = 150D;
+        Double b = 140D;
+        Double c = 160D;
+        //10.0
+        System.out.println(String.valueOf(a-b));
+
+        //10
+        String s = new BigDecimal(a.toString()).subtract(new BigDecimal(b.toString())).toBigInteger().toString();
+        System.out.println(s);
+
+
+    }
+
+    /***
+     * 字符串截取
+     */
+    @Test
+    public void testSubstring(){
+        //YBG295P-
+        String cartonName = "YBG295P-230308-D110005";
+        System.out.println(cartonName.substring(0,8));
+    }
+
+
+    /**
+     * D000011
+     * 指定填充字符
+     */
+    @Test
+    public void testFillZero(){
+        //D000011 6位小数,不够左侧填充0
+        System.out.println("D" + StringUtils.leftPad(String.valueOf(4 + 7), 6, "0"));
+    }
+
+    /**
+     * java.lang.NullPointerException
+     */
+    @Test
+    public void foreachEmptyList(){
+        List<String> list = null;
+        for(String s : list){
+            System.out.println("=================");
+            System.out.println(s);
+        }
+    }
+
+
+    /***
+     * xml的空格不会导致转json报错
+     */
+    @Test
+    public void xmlToJsonHavaEmpty(){
+        String xml = "<MESSAGE>\n" +
+                "\t<HEADER>\n" +
+                "\t\t<MESSAGENAME>ModifyEnumDefValue</MESSAGENAME>\n" +
+                "\t\t<TRANSACTIONID>202206241115000</TRANSACTIONID>\n" +
+                "\t\t<REPLYSUBJECTNAME>CSOT.G85.BC.PRD.MES.Listen.MBABLC00</REPLYSUBJECTNAME>\n" +
+                "\t\t<EVENTUSER>Taycen</EVENTUSER>\n" +
+                "\t\t<EVENTCOMMENT>ModifyEnumDefValue</EVENTCOMMENT>\n" +
+                "\t</HEADER>\n" +
+                "\t<BODY>\n" +
+                "\t\t<ENUMNAME>FullCottonAccordingGradeBranching</ENUMNAME>\n" +
+                "\t\t<ENUM VALUE>N</ENUM VALUE>\n" +
+                "\t\t<DEFAULTFLAG>Y</DEFAULTFLAG>\n" +
+                "\t</BODY>\n" +
+                "</MESSAGE>";
+        System.out.println(JSONObject.toJSONString(xml));
+    }
+
+
     /***
      *
      * {""} json解析时报错
