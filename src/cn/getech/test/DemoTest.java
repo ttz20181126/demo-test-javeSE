@@ -34,6 +34,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -50,6 +52,130 @@ public class DemoTest {
     //年份代表字段,从2010开始。
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
+
+    /**
+     * DecimalFormat格式化小数点
+     */
+    @Test
+    public void testDecimalFormat(){
+        Double a = 1.2d;
+        Double b = 1.29d;
+        Double c = 23.295d;
+        System.out.println(new DecimalFormat("0.00").format(a));  //1.20
+        System.out.println(new DecimalFormat("0.00").format(b));  //1.29
+        System.out.println(new DecimalFormat("0.00").format(c));  //23.30
+    }
+
+
+    /**
+     * Double类型的尾数0不会保留。需要使用  BigDecimal类
+     *
+     * number(5,2)  超过2位的小数舍去,比如0.234会保存为0.23,
+     *              但是0.20也会舍去0保存。只会保存0.2
+     */
+    @Test
+    public void testDoublePrecision(){
+        Double a = 0.20D;
+        System.out.println(a);  //0.2
+    }
+
+
+    /***
+     * calendar设定时间
+     */
+    @Test
+    public void testCalendar() {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date date = simpleDateFormat.parse("2023-03-31 08:30:00");
+            Date date2 = simpleDateFormat.parse("2023-04-30 08:30:00");
+            Timestamp timestamp1 = new Timestamp(date.getTime());  //date.getTime() 就是时间戳
+            Timestamp timestamp2 = new Timestamp(date2.getTime());
+
+
+            Calendar calendar = Calendar.getInstance();
+            Date currentTime = calendar.getTime();
+
+            calendar.setTime(timestamp1);
+            calendar.set(Calendar.HOUR_OF_DAY, 8);
+            calendar.set(Calendar.MINUTE, 30);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            Date startTime = calendar.getTime();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String sTime = sdf.format(calendar.getTime());
+
+            calendar.setTime(timestamp2);
+            calendar.set(Calendar.HOUR_OF_DAY, 18);
+            calendar.set(Calendar.MINUTE, 00);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            Date finishTime = calendar.getTime();
+
+            String fTime = sdf.format(calendar.getTime());
+
+
+            //2023-03-31 08:30:00--------------2023-04-30 18:00:00
+            //2023-03-31 08:30:00============= 2023-04-30 18:00:00
+            System.out.println(simpleDateFormat.format(startTime) + "--------------" + simpleDateFormat.format(finishTime));
+            if (currentTime.compareTo(startTime) < 0 || currentTime.compareTo(finishTime) > 0) {
+                System.out.println(sTime + "=============" + fTime);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+        /**
+     * toUpperCase转大写
+     */
+    @Test
+    public void toUpperCase(){
+        String a  = "aaa";
+        System.out.println(a.toUpperCase());
+        String b = "ct_aa";
+        //CT_AA
+        System.out.println(b.toUpperCase());
+    }
+
+    /**
+     * 把List转化成sql中in的字符串
+     * @param -
+     * @return  'aaaaa','bbbbb','bbbbb'
+     */
+    @Test
+    public void changeListToInString(){
+        List<String> list = new ArrayList<>();
+        list.add("aaaaa");
+        list.add("bbbbb");
+        list.add("bbbbb");
+        StringBuffer sb = new StringBuffer();
+        sb.append("'");
+        for(String element : list){
+            sb.append(element).append("','");
+        }
+        System.out.println(sb.capacity());
+        System.out.println(sb.toString().length());
+        String a = sb.substring(0, sb.toString().length() -2 );
+        System.out.println(a);
+    }
+
+
+    /***
+     * substringBeforeLast    substringAfterLast最后一个字符
+     * 条码规格流水号前加-  来截取 + 3000
+     */
+    @Test
+    public void testAdd3000(){
+        String initialCartonName = "YBG295P-230317-D01-0001";
+        String prefixName = StringUtils.substringBeforeLast(initialCartonName, "-");
+        String lastName =  String.valueOf(Integer.parseInt(StringUtils.substringAfterLast(initialCartonName, "-")) + 3000);
+        String fullName = prefixName + lastName;
+        //YBG295P-230317-D013001
+        System.out.println(fullName);
+    }
 
     /**
      * Double作减法的精度问题
