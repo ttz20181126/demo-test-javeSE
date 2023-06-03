@@ -52,6 +52,22 @@ public class DemoTest {
     //年份代表字段,从2010开始。
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
+    @Test
+    public void testlogic(){
+        String param = "LineMark";
+        if(!param.equals("NormalResistanceA") && !param.equals("LineMark")){
+            System.out.println("------------------");
+        }
+    }
+
+    /**
+     * no exception
+     */
+    @Test
+    public void testSplit(){
+        String group = "qwqrwrewrqwr";
+        System.out.println(group.split(";")[0]);
+    }
 
     /**
      * DecimalFormat格式化小数点
