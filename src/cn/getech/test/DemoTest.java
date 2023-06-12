@@ -52,8 +52,22 @@ public class DemoTest {
     //年份代表字段,从2010开始。
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
+
+    /**
+     * 从泡沫盒截取纸箱
+     */
     @Test
-    public void testlogic(){
+    public void indexOfCarton(){
+        String boxCode = "YBG295P-D0A0001-01";
+        String cartonCode = boxCode.substring(0,boxCode.lastIndexOf("-"));
+        System.out.println(cartonCode);
+    }
+
+    /**
+     * 不等于  NormalResistanceA & LineMark
+     */
+    @Test
+    public void testAssertLogic(){
         String param = "LineMark";
         if(!param.equals("NormalResistanceA") && !param.equals("LineMark")){
             System.out.println("------------------");
