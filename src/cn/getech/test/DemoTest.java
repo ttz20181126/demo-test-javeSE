@@ -53,6 +53,92 @@ public class DemoTest {
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
 
+    /***
+     * 拼棒   几拼
+     */
+    @Test
+    public void spliteType(){
+        String cryGroup = "CDGC2472305H9202X51N01W;CDGC2472306L0101D01Y04WF2;H2305Q10270W0100;";
+        System.out.println(cryGroup.split(";").length);   //3
+
+    }
+
+
+    /**
+     * 生成纸箱码的截取
+     */
+    @Test
+    public void testSerial(){
+
+        String fullName = "YBG247P-230619-A650000000101";
+        int serialLength = 4;
+        String segmentNo = "A65";
+
+
+        if (StringUtils.isEmpty(fullName) || serialLength <= 0 || serialLength > 10) {
+            System.out.println("=====================");
+        }
+
+        String serialNo = StringUtils.substring(fullName, fullName.length() - 10);
+        String prefixName = StringUtils.substring(fullName, 0, fullName.length() - 10);
+
+        String finalSerialNo = StringUtils.substring(serialNo, serialNo.length() - serialLength);
+
+        StringBuilder maxValue = new StringBuilder();
+        for (int i = 0; i < serialLength; i++) {
+            maxValue.append("9");
+        }
+
+        if (StringUtils.equals(finalSerialNo, String.valueOf(maxValue))) {
+            System.out.println("=====================");
+        }
+
+        String finalName = prefixName + finalSerialNo;
+        System.out.println(finalName);
+    }
+
+
+    /**
+     * 时间uuid
+     */
+    @Test
+    public void timeStamp(){
+
+        String aoi = "AOI-A";
+        System.out.println(aoi.substring(aoi.length() -1 )); //A
+
+        System.out.println(System.currentTimeMillis());  //1687597172268
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSSSSS");
+        String timeStamp = formatter.format(new Date());
+        System.out.println(timeStamp);  //20230624165932000284
+    }
+
+    /***
+     * map转json
+     * {"cutNo":"P1D22222","illustrationCount":"222","productType":"pcl"}
+     */
+    @Test
+    public void jsonMap(){
+        Map<String, String> map = new HashMap<>();
+        map.put("illustrationCount", "222");
+        map.put("cutNo", "P1D22222");
+        map.put("productType", "pcl");
+        System.out.println(JSONUtil.toJsonStr(map));
+    }
+
+    /**
+     * 排列编码
+     */
+    @Test
+    public void split2(){
+        String machine1 = "B18";
+        String machine2 = "B02";
+        String[] split1 = machine2.split("");
+        String rangeName = split1[0] + split1[1];
+        System.out.println(rangeName);
+    }
+
     /**
      * 从泡沫盒截取纸箱
      */
@@ -61,6 +147,15 @@ public class DemoTest {
         String boxCode = "YBG295P-D0A0001-01";
         String cartonCode = boxCode.substring(0,boxCode.lastIndexOf("-"));
         System.out.println(cartonCode);
+    }
+
+    /**
+     * 截取最后-后面的同时去0
+     */
+    public void subStrZero(){
+        String portName = "CPBZX-A-P12";
+        String s = portName.substring(portName.lastIndexOf("-") + 2).replaceAll("^0*", "");
+        System.out.println("=============" + s);
     }
 
     /**
