@@ -54,6 +54,32 @@ public class DemoTest {
 
 
     /***
+     *  获取最后字符
+     */
+    @Test
+    public void sub(){
+        String a = "ZH-A";
+        String sub = a.substring(a.length() - 1);
+        System.out.println(sub);
+    }
+
+
+    /**
+     * 向上取整
+     */
+    @Test
+    public void calculateMaxQuantity(){
+        int assignMax = 7;
+        int layerMax = 6;
+        System.out.println("会直接向下取整数结果为1:" + 7/6);
+        System.out.println(("向上取整结果为2:" +  ((7+6-1)/6)));
+        System.out.println("会直接向下取整数结果为0:" + 5/6);
+        System.out.println("结果为12:" + 2*6);
+        //6乘以7初一6的向上取整
+        //new BigDecimal(6).multiply(new BigDecimal(assignMax) / new BigDecimal(layerMax))
+    }
+
+    /***
      * 拼棒   几拼
      */
     @Test
