@@ -23,7 +23,7 @@ import com.linuxense.javadbf.DBFReader;
 import com.linuxense.javadbf.DBFWriter;
 import org.junit.Test;
 
-import javax.xml.transform.Source;
+
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -44,6 +44,8 @@ public class DemoTest {
 
     //年份代表字段,从2010开始。
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
+
+
 
     /**
      * 隔2换行
