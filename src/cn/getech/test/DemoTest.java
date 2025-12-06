@@ -2,9 +2,12 @@ package cn.getech.test;
 
 import cn.getech.test.constant.ConstantEnum;
 import cn.getech.test.dto.*;
+import cn.getech.test.mybatis.JDBC;
 import cn.getech.test.mybatis.User;
+import cn.getech.test.mybatis.Wife;
 import cn.getech.test.print.PrinterUtil;
 import cn.getech.test.util.HttpClientUtil;
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateTime;
@@ -17,18 +20,22 @@ import cn.hutool.json.JSONUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.beust.jcommander.internal.Lists;
 import com.linuxense.javadbf.DBFException;
 import com.linuxense.javadbf.DBFField;
 import com.linuxense.javadbf.DBFReader;
 import com.linuxense.javadbf.DBFWriter;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 
-
 import java.io.*;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -46,6 +53,918 @@ public class DemoTest {
     public static final char[] yearSymbol = {'A','B','C','D','E','F','G','H','J','K','L','M','N','P','R','S','T','V','W','X','Y','1','2','3','4','5','6','7','8','9'};
 
 
+    /***
+     *  获取最后字符
+     */
+    @Test
+    public void sub(){
+        String a = "ZH-A";
+        String sub = a.substring(a.length() - 1);
+        System.out.println(sub);
+    }
+
+
+    /**
+     * 向上取整
+     */
+    @Test
+    public void calculateMaxQuantity(){
+        int assignMax = 7;
+        int layerMax = 6;
+        System.out.println("会直接向下取整数结果为1:" + 7/6);
+        System.out.println(("向上取整结果为2:" +  ((7+6-1)/6)));
+        System.out.println("会直接向下取整数结果为0:" + 5/6);
+        System.out.println("结果为12:" + 2*6);
+        //6乘以7初一6的向上取整
+        //new BigDecimal(6).multiply(new BigDecimal(assignMax) / new BigDecimal(layerMax))
+    }
+
+    /***
+     * 拼棒   几拼
+     */
+    @Test
+    public void spliteType(){
+        String cryGroup = "CDGC2472305H9202X51N01W;CDGC2472306L0101D01Y04WF2;H2305Q10270W0100;";
+        System.out.println(cryGroup.split(";").length);   //3
+
+    }
+
+
+    /**
+     * 生成纸箱码的截取
+     */
+    @Test
+    public void testSerial(){
+
+        String fullName = "YBG247P-230619-A650000000101";
+        int serialLength = 4;
+        String segmentNo = "A65";
+
+
+        if (StringUtils.isEmpty(fullName) || serialLength <= 0 || serialLength > 10) {
+            System.out.println("=====================");
+        }
+
+        String serialNo = StringUtils.substring(fullName, fullName.length() - 10);
+        String prefixName = StringUtils.substring(fullName, 0, fullName.length() - 10);
+
+        String finalSerialNo = StringUtils.substring(serialNo, serialNo.length() - serialLength);
+
+        StringBuilder maxValue = new StringBuilder();
+        for (int i = 0; i < serialLength; i++) {
+            maxValue.append("9");
+        }
+
+        if (StringUtils.equals(finalSerialNo, String.valueOf(maxValue))) {
+            System.out.println("=====================");
+        }
+
+        String finalName = prefixName + finalSerialNo;
+        System.out.println(finalName);
+    }
+
+
+    /**
+     * 时间uuid
+     */
+    @Test
+    public void timeStamp(){
+
+        String aoi = "AOI-A";
+        System.out.println(aoi.substring(aoi.length() -1 )); //A
+
+        System.out.println(System.currentTimeMillis());  //1687597172268
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmssSSSSSS");
+        String timeStamp = formatter.format(new Date());
+        System.out.println(timeStamp);  //20230624165932000284
+    }
+
+    /***
+     * map转json
+     * {"cutNo":"P1D22222","illustrationCount":"222","productType":"pcl"}
+     */
+    @Test
+    public void jsonMap(){
+        Map<String, String> map = new HashMap<>();
+        map.put("illustrationCount", "222");
+        map.put("cutNo", "P1D22222");
+        map.put("productType", "pcl");
+        System.out.println(JSONUtil.toJsonStr(map));
+    }
+
+    /**
+     * 排列编码
+     */
+    @Test
+    public void split2(){
+        String machine1 = "B18";
+        String machine2 = "B02";
+        String[] split1 = machine2.split("");
+        String rangeName = split1[0] + split1[1];
+        System.out.println(rangeName);
+    }
+
+    /**
+     * 从泡沫盒截取纸箱
+     */
+    @Test
+    public void indexOfCarton(){
+        String boxCode = "YBG295P-D0A0001-01";
+        String cartonCode = boxCode.substring(0,boxCode.lastIndexOf("-"));
+        System.out.println(cartonCode);
+    }
+
+    /**
+     * 截取最后-后面的同时去0
+     */
+    public void subStrZero(){
+        String portName = "CPBZX-A-P12";
+        String s = portName.substring(portName.lastIndexOf("-") + 2).replaceAll("^0*", "");
+        System.out.println("=============" + s);
+    }
+
+    /**
+     * 不等于  NormalResistanceA & LineMark
+     */
+    @Test
+    public void testAssertLogic(){
+        String param = "LineMark";
+        if(!param.equals("NormalResistanceA") && !param.equals("LineMark")){
+            System.out.println("------------------");
+        }
+    }
+
+    /**
+     * no exception
+     */
+    @Test
+    public void testSplit(){
+        String group = "qwqrwrewrqwr";
+        System.out.println(group.split(";")[0]);
+    }
+
+    /**
+     * DecimalFormat格式化小数点
+     */
+    @Test
+    public void testDecimalFormat(){
+        Double a = 1.2d;
+        Double b = 1.29d;
+        Double c = 23.295d;
+        System.out.println(new DecimalFormat("0.00").format(a));  //1.20
+        System.out.println(new DecimalFormat("0.00").format(b));  //1.29
+        System.out.println(new DecimalFormat("0.00").format(c));  //23.30
+    }
+
+
+    /**
+     * Double类型的尾数0不会保留。需要使用  BigDecimal类
+     *
+     * number(5,2)  超过2位的小数舍去,比如0.234会保存为0.23,
+     *              但是0.20也会舍去0保存。只会保存0.2
+     */
+    @Test
+    public void testDoublePrecision(){
+        Double a = 0.20D;
+        System.out.println(a);  //0.2
+    }
+
+
+    /***
+     * calendar设定时间
+     */
+    @Test
+    public void testCalendar() {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date date = simpleDateFormat.parse("2023-03-31 08:30:00");
+            Date date2 = simpleDateFormat.parse("2023-04-30 08:30:00");
+            Timestamp timestamp1 = new Timestamp(date.getTime());  //date.getTime() 就是时间戳
+            Timestamp timestamp2 = new Timestamp(date2.getTime());
+
+
+            Calendar calendar = Calendar.getInstance();
+            Date currentTime = calendar.getTime();
+
+            calendar.setTime(timestamp1);
+            calendar.set(Calendar.HOUR_OF_DAY, 8);
+            calendar.set(Calendar.MINUTE, 30);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            Date startTime = calendar.getTime();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String sTime = sdf.format(calendar.getTime());
+
+            calendar.setTime(timestamp2);
+            calendar.set(Calendar.HOUR_OF_DAY, 18);
+            calendar.set(Calendar.MINUTE, 00);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            Date finishTime = calendar.getTime();
+
+            String fTime = sdf.format(calendar.getTime());
+
+
+            //2023-03-31 08:30:00--------------2023-04-30 18:00:00
+            //2023-03-31 08:30:00============= 2023-04-30 18:00:00
+            System.out.println(simpleDateFormat.format(startTime) + "--------------" + simpleDateFormat.format(finishTime));
+            if (currentTime.compareTo(startTime) < 0 || currentTime.compareTo(finishTime) > 0) {
+                System.out.println(sTime + "=============" + fTime);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+        /**
+     * toUpperCase转大写
+     */
+    @Test
+    public void toUpperCase(){
+        String a  = "aaa";
+        System.out.println(a.toUpperCase());
+        String b = "ct_aa";
+        //CT_AA
+        System.out.println(b.toUpperCase());
+    }
+
+    /**
+     * 把List转化成sql中in的字符串
+     * @param -
+     * @return  'aaaaa','bbbbb','bbbbb'
+     */
+    @Test
+    public void changeListToInString(){
+        List<String> list = new ArrayList<>();
+        list.add("aaaaa");
+        list.add("bbbbb");
+        list.add("bbbbb");
+        StringBuffer sb = new StringBuffer();
+        sb.append("'");
+        for(String element : list){
+            sb.append(element).append("','");
+        }
+        System.out.println(sb.capacity());
+        System.out.println(sb.toString().length());
+        String a = sb.substring(0, sb.toString().length() -2 );
+        System.out.println(a);
+    }
+
+
+    /***
+     * substringBeforeLast    substringAfterLast最后一个字符
+     * 条码规格流水号前加-  来截取 + 3000
+     */
+    @Test
+    public void testAdd3000(){
+        String initialCartonName = "YBG295P-230317-D01-0001";
+        String prefixName = StringUtils.substringBeforeLast(initialCartonName, "-");
+        String lastName =  String.valueOf(Integer.parseInt(StringUtils.substringAfterLast(initialCartonName, "-")) + 3000);
+        String fullName = prefixName + lastName;
+        //YBG295P-230317-D013001
+        System.out.println(fullName);
+    }
+
+    /**
+     * Double作减法的精度问题
+     * 省去小数
+     */
+    @Test
+    public void testDouble(){
+        Double a = 150D;
+        Double b = 140D;
+        Double c = 160D;
+        //10.0
+        System.out.println(String.valueOf(a-b));
+
+        //10
+        String s = new BigDecimal(a.toString()).subtract(new BigDecimal(b.toString())).toBigInteger().toString();
+        System.out.println(s);
+
+
+    }
+
+    /***
+     * 字符串截取
+     */
+    @Test
+    public void testSubstring(){
+        //YBG295P-
+        String cartonName = "YBG295P-230308-D110005";
+        System.out.println(cartonName.substring(0,8));
+    }
+
+
+    /**
+     * D000011
+     * 指定填充字符
+     */
+    @Test
+    public void testFillZero(){
+        //D000011 6位小数,不够左侧填充0
+        System.out.println("D" + StringUtils.leftPad(String.valueOf(4 + 7), 6, "0"));
+    }
+
+    /**
+     * java.lang.NullPointerException
+     */
+    @Test
+    public void foreachEmptyList(){
+        List<String> list = null;
+        for(String s : list){
+            System.out.println("=================");
+            System.out.println(s);
+        }
+    }
+
+
+    /***
+     * xml的空格不会导致转json报错
+     */
+    @Test
+    public void xmlToJsonHavaEmpty(){
+        String xml = "<MESSAGE>\n" +
+                "\t<HEADER>\n" +
+                "\t\t<MESSAGENAME>ModifyEnumDefValue</MESSAGENAME>\n" +
+                "\t\t<TRANSACTIONID>202206241115000</TRANSACTIONID>\n" +
+                "\t\t<REPLYSUBJECTNAME>CSOT.G85.BC.PRD.MES.Listen.MBABLC00</REPLYSUBJECTNAME>\n" +
+                "\t\t<EVENTUSER>Taycen</EVENTUSER>\n" +
+                "\t\t<EVENTCOMMENT>ModifyEnumDefValue</EVENTCOMMENT>\n" +
+                "\t</HEADER>\n" +
+                "\t<BODY>\n" +
+                "\t\t<ENUMNAME>FullCottonAccordingGradeBranching</ENUMNAME>\n" +
+                "\t\t<ENUM VALUE>N</ENUM VALUE>\n" +
+                "\t\t<DEFAULTFLAG>Y</DEFAULTFLAG>\n" +
+                "\t</BODY>\n" +
+                "</MESSAGE>";
+        System.out.println(JSONObject.toJSONString(xml));
+    }
+
+
+    /***
+     *
+     * {""} json解析时报错
+     * expect ':' at 0, name
+     */
+    @Test
+    public void jsonObjectParse() {
+        String jsonString = "{\"\"}";
+        JSONObject jObject = (JSONObject) JSONObject.parse(jsonString);
+    }
+
+
+    /**
+     * java.lang.StringIndexOutOfBoundsException: String index out of range: -4
+     */
+    @Test
+    public void subString(){
+        String boxName = "G12+P306.6-T150G-230105-00102";
+        System.out.println(boxName.substring(0,4));
+        String boxName2 = "G12-P306.6-T150G-230105-00102";
+        String productSpecType = boxName2.substring(0,4);
+        System.out.println(productSpecType.substring(0,productSpecType.length()-1));
+
+        String a = "F04000000744 and ";
+        System.out.println(a.substring(0,a.length()-4));
+
+        //NULL POINTER
+        String b  = "";
+        System.out.println(b.substring(b.length() - 4,b.length() - 1));
+
+        //NULL POINTER
+        Map<String,String> hashmap = null;
+        System.out.println(hashmap.get("PORTNAME"));
+    }
+
+    /**
+     * 1: [{"id":1,"age":4,"username":"zzz"},{"id":1,"age":4,"username":"zzz"}]
+     * 1:[{"id":0,"age":4,"username":"zzz"},{"id":1,"age":4,"username":"zzz"}]
+     */
+    @Test
+    public void modifyObjectToList(){
+        User user = new User();
+        user.setId(3);
+        user.setUsername("zzz");
+        user.setAge(4);
+        List<String> hobbyList = Arrays.asList("篮球","足球","乒乓球");
+        user.setHobbyList(hobbyList);
+        Wife wife = new Wife();
+        wife.setWifeName("西施");
+        wife.setWifeSize("D");
+        List<Wife> wifeArrayList = new ArrayList<>();
+        wifeArrayList.add(wife);
+        user.setWifeList(wifeArrayList);
+
+        //没有创建对象，最终指向的同一个对象，打印的List元素是同一对象
+        List<User> users = new ArrayList<>();
+        for(int i = 0; i < 2;i++){
+            user.setId(i);
+            users.add(user);
+        }
+        System.out.println("1:" + JSONUtil.toJsonStr(users));
+
+        //1.创建对象，拷贝属性值有用    2.List<String>、List<Wife>都可以复制。
+        List<User> users2 = new ArrayList<>();
+        for(int i = 0; i < 2;i++){
+            User u = new User();
+            BeanUtil.copyProperties(user,u);
+            u.setId(i);
+            users2.add(u);
+        }
+        System.out.println("2:" + JSONUtil.toJsonStr(users2));
+
+    }
+
+
+    /**
+     * org.apache.commons.lang3
+     * isNotBlank   如果为null，length=0,当length为0或者存在空白返回true，[兼容了isNotEmpty并处理了内容为空白的]
+     * isNotEmpty   如果为null或者lenth=0，返回true
+     */
+    @Test
+    public void langStringUtils(){
+        String str1 = null;
+        String str2 = "";
+        String str3 = " ";
+        String str4 = "ABC";
+
+        System.out.println(StringUtils.isNotBlank(str1));//false
+        System.out.println(StringUtils.isNotBlank(str2));//false
+        System.out.println(StringUtils.isNotBlank(str3));//false
+        System.out.println(StringUtils.isNotBlank(str4));//true
+
+        System.out.println(StringUtils.isNotEmpty(str1));//false
+        System.out.println(StringUtils.isNotEmpty(str2));//false
+        System.out.println(StringUtils.isNotEmpty(str3));//true
+        System.out.println(StringUtils.isNotEmpty(str4));//true
+
+    }
+
+    /**
+     * 从二维码截图箱码
+     */
+    @Test
+    public void subCartonInCartonBox(){
+        String cartonInCartonBox = "SN:YBG295P-221009-WD33064SN1:YBG295P-221009-WD33064SN2:....";
+        System.out.println(cartonInCartonBox.substring(cartonInCartonBox.indexOf("SN:") + 3,cartonInCartonBox.indexOf("SN1")));
+    }
+
+
+    /**
+     * 截取两头   LIKE  A%  &&  LIKE  %B
+     *  productSpecQw.likeRight(ProductSpec::getDescription,description.substring(0,24));
+     *  productSpecQw.likeLeft(ProductSpec::getDescription, description.substring(description.lastIndexOf("/")));
+     */
+    @Test
+    public void likeRightLeft(){
+        String desc = "硅片/P/G/218.2/306.60/150/0.4-1.1/GA+PXA1";
+        System.out.println(desc.substring(0,24));  //硅片/P/G/218.2/306.60/150/
+        System.out.println(desc.substring(desc.lastIndexOf("/")));// /GA+PXA1
+
+    }
+
+
+    /***
+     * indexOf找不到就是-1.从0开始
+     */
+    @Test
+    public void findInStr(){
+        String barcode = "YBG247P-220912-WB10001";
+        int i = barcode.indexOf("-WB1");
+        System.out.println(i);//14
+
+        String barcode2 = "YBG247P-220912-W20001";
+        int j = barcode2.indexOf("-WB1");
+        System.out.println(j);//-1
+
+        String barcode3 = "-WB1-YBG247P-220912-W20001";
+        int z = barcode3.indexOf("-WB1");
+        System.out.println(z);//0
+
+    }
+
+    /**
+     * 手写集合工具类使用集合工具类
+     */
+    @Test
+    public void useAssertSize(){
+        List<User> arrayList = new ArrayList<>();
+        System.out.println(new DemoTest().assertSize(arrayList,1));
+        List<User> arrayList2 = null;
+        System.out.println(new DemoTest().isEmpty(arrayList));
+    }
+
+
+    public boolean assertSize(List<?> list,int size) {
+        return list.size() == size;
+    }
+
+    public boolean isEmpty(Collection<?> collection) {
+        return collection == null || collection.isEmpty();
+    }
+
+
+    /***
+     * 托盘取中间号段
+     */
+    @Test
+    public void subStringMiddleContent(){
+
+        //:后的值
+        String text = "WMS:TEXsvr11";
+        System.out.println(text.substring(0,text.indexOf(":")));
+
+        //托盘号取出号段--L02
+        String processGroup = "YB220826-L02-0001";
+        int i = processGroup.indexOf("-");
+        int j = processGroup.lastIndexOf("-");
+        System.out.println("i=" + i + ",j = " + j);
+        System.out.println(processGroup.substring(i + 1,j));
+    }
+
+    /**
+     * 对象转json数组
+     *       json数组对应的字符串传输,都需要双引号。用反斜杠转义。
+     * {
+     * 	"bskey": null,
+     * 	"ifywid": "DJKProductOutOfStockRequest",
+     * 	"sysid": "YC4MES",
+     * 	"zdata": "[{
+     *
+     *         \"SpliceType\":\"1\",
+     *         \"Num\":142.357,
+     * 		   \"BoxCode\":\"G2208M0613020000\",
+     * 		   \"BarCodeType\":\"serialNumber\",
+     * 		   \"ProductName\":\"方/P/G/210/295/GA+2/0.2-1.1/B12/1/--\",
+     * 		   \"Size\":\"方/P/G/210/295/GA+2/0.2-1.1/B12/1/--\",
+     * 		   \"UnitName\":\"KG\",
+     * 		   \"CateName\":\"F02010\",
+     * 		  \"BatchNum\":\"9999999999\",
+     *         \"SupName\":null,
+     *         \"PrDefine5\":null,
+     *         \"IeDefine8\":\"9999999999\",
+     *         \"InStorageTime\":\"2022-08-25T10:42:41.2639616+08:00\",
+     *         \"Remark\":null,
+     *         \"PrDefine7\":\"1000020641\",
+     *         \"LGORT\":\"R016\",
+     *         \"MESWorkOrder\":\"100002064112\",
+     *         \"MachineId\":\"ZB-F\",
+     *         \"TransportJobName\":\"20220825101217254000\",
+     *         \"TargetLocation\":null,
+     *         \"TaskId\":null,
+     *         \"UserId\":null,
+     *         \"SAPTaskId\":null,
+     *         \"SAPTaskLn\":null,
+     *         \"Location\":\"单晶回温库\",
+     *         \"outDate\":\"2022-08-25T10:42:41.2639643+08:00\",
+     *         \"batchNumber\":\"1\",
+     *         \"orderNumber\":\"ZZ9BA220819030Z\",
+     *         \"crystalNo\":\"G2208M0613020000\",
+     *         \"norms\":\"Φ295×210\",
+     *         \"StorageLength\":\"894.000\",
+     *         \"crystalLength\":\"894.000\",
+     *         \"chipLength\":\"0.000\",
+     *         \"weight\":\"91.982\",
+     *         \"oblique\":\"0.000\",
+     *         \"TheoryWeight\":\"142.357\",
+     *         \"CustomerType\":\"GA+2\",
+     *         \"VerificationRemarks\":\"\",
+     *         \"factoryCard\":\"1021\",
+     *         \"MonocrystalNo\":\"G2208M0613020000;\",
+     *         \"StickType\":\"方棒\",
+     *         \"ProductGreySkin\":\"0\",
+     *         \"SquareBarGreySkin\":\"0\",
+     *         \"LineMarks\":\"0\",
+     *         \"KnifeMarks\":\"0\",
+     *         \"Scratches\":\"0\",
+     *         \"NotGround\":\"0\",
+     *         \"SpliceLength\":\"894\",
+     *         \"SpliceWidth\":\"0\",
+     *         \"CLXS\":null,
+     *         \"WMSTaskId\":\"YCCK002828\",
+     *         \"SupNo\":null,
+     *         \"Torr\":null
+     *     }]"
+     * }
+     *
+     *
+     */
+    @Test
+    public void  jsonArrayToString(){
+        Student student = new Student();
+        student.setId(3);
+        student.setName("zhangshan");
+        List<Student> studentList = new ArrayList<>();
+        studentList.add(student);
+        String s = JSONArray.toJSONString(studentList);
+        System.out.println(s);   //[{"id":3,"name":"zhangshan"}]
+    }
+
+    /**
+     * 仅仅获取年月日中的日
+     */
+    @Test
+    public void obtainDay(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        System.out.println(sdf.format(new Date()));
+
+        SimpleDateFormat sdf2 = new SimpleDateFormat("dd");
+        System.out.println(sdf2.format(new Date()));
+    }
+
+    /**
+     * idea本地调试in的入参
+     * 先notepad将(String)替换成空格，
+     * 再用此工具，加上单引号化为in的入参
+     */
+    @Test
+    public void addSplit(){
+        String oldStr = "F04000001637  , F04000001933  , F04000001984  , F04000001985  , F04000002028  , F04000002036  , F04000002037  , F04000002038  , F04000002040  , F04000002041  , F04000002089  , F04000001501  , F04000001503  , F04000001563  , F04000000740  , F04000001766  , F04000001767  , F04000001768  , F04000001769  , F04000001770  , F04000001771  , F04000001905  , F04000001907  , F04000001924  , F04000001932  , F04000001934  , F04000001935  , F04000001936  , F04000001982  , F04000001983  , F04000001986  , F04000002079  , F04000002084  , F04000002087  , F04000002092  , F04000002093  , F04000002094  ,";
+        String[] split = oldStr.split(",");
+        StringBuffer stringBuffer = new StringBuffer();
+        for(int i = 0; i < split.length;i++){
+            stringBuffer.append("\'").append(split[i].trim()).append("\'").append(",");
+        }
+        String s = stringBuffer.toString();
+        System.out.println(s.substring(0,s.length()-1));
+    }
+
+
+    /**
+     * 日期类型
+     * Date和LocalDateTime
+     * 连接数据库url通常配置UTC时区，
+     * 那么插入的时候要主机GTM + 8,LocalDateTime不需要
+     */
+    @Test
+    public void testDate(){
+        Date date = new Date();
+        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(date));
+
+        LocalDateTime localDateTime = LocalDateTime.now();
+        System.out.println(localDateTime);
+    }
+
+    /**
+     *   / 取结果的整数
+     *   % 取结果的余数
+     */
+    @Test
+    public void division(){
+        System.out.println(4/10);  //0
+        System.out.println(10/10); //1
+        System.out.println(11/10); //1
+        System.out.println(11%10); //1
+        System.out.println(4%10);  //4
+        //int pageNo = total%pageSize == 0? total/pagesize : total/pageSize + 1;
+
+    }
+
+
+    /**
+     * list.stream().collect(Collectors.toMap(Student::getId, Function.identity()));
+     * Function.identity()  键有重复会报错
+     */
+    @Test
+    public void identifiedConvert(){
+        Student student = new Student();
+        student.setId(1);
+        student.setName("张三");
+        Student student2 = new Student();
+        student2.setId(2);
+        student2.setName("李四");
+        List<Student> list = new ArrayList<>();
+        list.add(student);
+        list.add(student2);
+        Map<Integer, Student> collect = list.stream().collect(Collectors.toMap(Student::getId, Function.identity()));
+        System.out.println(JSON.toJSONString(collect));
+
+
+        Student student3 = new Student();
+        student3.setId(3);
+        student3.setName("王麻子");
+        Student student4 = new Student();
+        student4.setId(3);
+        student4.setName("张胖子");
+        List<Student> list2 = new ArrayList<>();
+        list2.add(student3);
+        list2.add(student4);
+        Map<Integer, String> collect1 = list2.stream().collect(Collectors.toMap(Student::getId, v -> v.getName(), (v1, v2) -> v1 + v2));
+        System.out.println(collect1);
+        /**
+         * Function.identity()重复的键，会报错
+         */
+        Map<Integer, Student> collect2 = list2.stream().collect(Collectors.toMap(Student::getId, Function.identity()));
+        System.out.println(JSON.toJSONString(collect2));
+
+    }
+
+    /**
+     * 字符串字符替代   截取
+     */
+    @Test
+    public void substitute(){
+        String electrical = "0.4-1.1Ω.cm";
+        //0.4≤1.1Ω.cm  ‘-’替换成‘≤’
+        System.out.println(electrical.replace('-','≤'));
+
+        //≤1.1Ω        ‘-’替换成‘≤’截取‘≤’后面
+        String replace = electrical.replace('-', '≤');
+        System.out.println(replace.substring(replace.indexOf("≤"),replace.length()-3));
+
+        //截取部分描述
+        String desc = "硅片/P/G/210.00/295.00/155/0.4-1.1/GA+XXA1";
+        System.out.println(desc.substring(0,24));
+
+        //ZB-A 截取到最后一个‘-’
+        String machineName = "ZB-A-01";
+        System.out.println(machineName.substring(0,machineName.lastIndexOf("-")));
+
+        //-A
+        String area = "ZB-A";
+        System.out.println(area.substring(area.lastIndexOf("-")));
+
+        //CN291010000008,CN251010011031
+        String zzConsumableName = "CN291010000008,CN251010011031,";
+        zzConsumableName = zzConsumableName.substring(0,zzConsumableName.length()-1);
+        System.out.println(zzConsumableName);
+
+    }
+
+
+    @Test
+    public void reflect() throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
+
+        //https://www.cnblogs.com/ht1990/p/15356054.html
+        //Class<?> aClass = Class.forName("cn.getech.test.mybatis.JDBC");
+
+        Class<JDBC> jdbcClass = JDBC.class;
+        Field reportMap = jdbcClass.getDeclaredField("reportMap");
+        reportMap.setAccessible(true);
+        Object o = reportMap.get(new JDBC());
+        System.out.println("获取私有属性值:" + o);    //{1=333}
+        Map<String, String> o2 = (Map<String, String>)reportMap.get(new JDBC());
+        o2.clear();
+        System.out.println(o2.size());
+
+    }
+
+
+
+    /**
+     * float的加法
+     */
+    @Test
+    public void testFloat(){
+        Float a = 0f;
+        Float b = 2.3f;
+        Float c = 2f;
+        Float d = a + b;
+        Float e = b + c;
+        System.out.println(d  + " "   + e);//2.3 4.3
+    }
+
+    /**
+     * 三目运算符
+     */
+    @Test
+    public void testOperationRes(){
+        String s = testOperation();
+        System.out.println(s);//非0和1返工   0标准  1外协
+    }
+
+    public String  testOperation(){
+        int a = 4;
+        return a == 0?"标准":a == 1 ?"外协":"返工";
+    }
+
+    /**
+     * now.minusMinutes(10);获取某个时刻的前10分钟。
+     */
+    @Test
+    public void jodaTimeTest(){
+        Date date = new Date();
+        System.out.println(date);//Tue May 31 10:15:02 CST 2022
+        org.joda.time.DateTime now = new org.joda.time.DateTime();
+        System.out.println(now);//2022-05-31T10:15:02.137+08:00
+        List<Date> reList = Lists.newArrayList();
+        org.joda.time.DateTime dateTime = now.minusMinutes(10);
+        reList.add(dateTime.toDate());
+        reList.add(now.toDate());
+        Date date1 = reList.get(0);
+        Date date2 = reList.get(1);
+        long time = reList.get(0).getTime();
+        System.out.println(date1);//Tue May 31 10:05:02 CST 2022
+        System.out.println(date2);//Tue May 31 10:15:02 CST 2022
+        System.out.println(time);//1653962702137
+    }
+
+
+    /**
+     * list添加基本数据类型，后修改不变，引用类型会变。
+     */
+    @Test
+    public void listAdd(){
+
+        List<String> strs = new ArrayList<>();
+        String str = "1111";
+        strs.add(str);
+        str = "2222";
+        System.out.println(strs.get(0));//1111
+
+
+        List<User> userList = new ArrayList<>();
+        User user = new User();
+        userList.add(user);
+        user.setUsername("ssss");
+        System.out.println(JSONUtil.toJsonStr(userList));//[{"age":0,"username":"ssss"}]
+    }
+
+    /***
+     * 分隔字符
+     */
+    @Test
+    public void splitChar(){
+        String res = "车灯   注：1   注：2";
+        String pname1 = "";
+        String pname2 = "";
+        if(res.contains("注")){
+            pname1 = res.substring(0,res.indexOf("注"));
+            pname2 = res.substring(res.indexOf("注"));
+        }else{
+            pname1 = res;
+        }
+        System.out.println(pname1 + "---------" + pname2);
+    }
+
+
+    /**
+     * map赋一个字符变量，变量被赋予不同的值。
+     */
+    @Test
+    public void putRepeatValue(){
+        Map<String,String> map = new HashMap<>();
+        String factory = "100";
+        map.put("factory",factory);
+        factory = "company";
+        map.put("company",factory);
+        for (String key : map.keySet()) {
+            //factory :100
+            //company :company
+            System.out.println(key + " :" + map.get(key));
+        }
+    }
+
+    /**
+     * Java是值传递
+     * 值传递是会拷贝一个副本，做修改
+     * 传对象是，也是值传递，但是传递的是这个引用的地址，拷贝的副本和传入的参数两者指向的是同一个地址，副本去修改，原指向的值也修改了。
+     */
+    @Test
+    public void valueTrans(){
+        int a = 1;
+        String str = "zhangsan";
+        changeValue(a,str);
+        System.out.println(a);  //1
+        System.out.println(str);  //zhangsan
+    }
+
+    public void changeValue(int a,String s){
+        a = 3;
+        s = "lisi";
+
+    }
+
+    /**
+     * HashMap用long做键是否存在问题。
+     */
+    @Test
+    public void longKeyMap(){
+        Map<Long,String> classNoName = new HashMap<>();
+        classNoName.put(11111L,"张三");
+        classNoName.put(12212313232L,"张三2");
+        classNoName.put(1123323232111L,"张三3");
+        System.out.println(classNoName.get(1123323232111L));
+    }
+
+
+    /***
+     * 计算次数
+     */
+    @Test
+    public void countStep(){
+        int a = (800 + 1000 -1)/1000;
+        System.out.println(a);//1
+
+        int b = (1001 + 1000 -1)/1000;
+        System.out.println(b);//2
+
+        int c = (999 + 1000 -1)/1000;
+        System.out.println(c);//1
+    }
 
     /**
      * 隔2换行

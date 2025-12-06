@@ -6,8 +6,19 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class JDBC {
+
+    private Map<String, String> reportMap = new ConcurrentHashMap<>();
+
+
+    public JDBC(){
+        reportMap.put("1","333");
+    }
+
+
     public static void main(String[] args) {
         User user = new User();
         user.setId(1);
